@@ -24,7 +24,7 @@ public class Vector2d {
 
     @Override
     public String toString() {
-        return "(" + Integer.toString(x) + "," + Integer.toString(y) + ")";
+        return "[" + Integer.toString(x) + "," + Integer.toString(y) + "]";
     }
 
     public boolean precedes(Vector2d other) {
