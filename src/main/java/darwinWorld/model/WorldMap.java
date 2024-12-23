@@ -2,7 +2,7 @@ package darwinWorld.model;
 
 import darwinWorld.enums.MoveRotation;
 
-public class WorldMap {
+public class WorldMap implements ILocationProvider {
     public Vector2d getPosition(Vector2d v) {
         // TODO: to implement
         return v;

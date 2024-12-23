@@ -1,18 +1,18 @@
 package darwinWorld.model.worldElements.animals;
 
 import darwinWorld.enums.MoveRotation;
+import darwinWorld.model.ILocationProvider;
 import darwinWorld.model.Vector2d;
-import darwinWorld.model.WorldMap;
 import darwinWorld.model.worldElements.IWorldElement;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 
 import java.util.List;
 
 public abstract class AbstractAnimal implements IWorldElement {
-    private Vector2d position;
-    private MoveRotation rotation;
-    private final List<MoveRotation> genes;
-    private int geneCurrentIndex;
+    protected Vector2d position;
+    protected MoveRotation rotation;
+    protected final List<MoveRotation> genes;
+    protected int geneCurrentIndex;
 
     protected AbstractAnimal(
             Vector2d position,
@@ -45,14 +45,16 @@ public abstract class AbstractAnimal implements IWorldElement {
 
     public void move(
             IGeneSelectionStrategy geneSelectionStrategy,
-            WorldMap worldMap
+            ILocationProvider locationProvider
     ) {
         geneCurrentIndex = geneSelectionStrategy.selectNextGene(genes, geneCurrentIndex);
         MoveRotation currentRotation = MoveRotation.add(rotation, genes.get(geneCurrentIndex));
         Vector2d newPosition = position.add(currentRotation.toVector());
-        position = worldMap.getPosition(newPosition);
-        rotation = worldMap.getRotation(newPosition);
+        position = locationProvider.getPosition(newPosition);
+        rotation = locationProvider.getRotation(newPosition);
     }
 
-    public abstract void eat(int energyFromFood);
+    public void eat(int energyFromFood) {
+        return;
+    }
 }
