@@ -1,7 +1,9 @@
 package darwinWorld.enums;
 
+import darwinWorld.model.Vector2d;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,4 +54,22 @@ class MoveRotationTest {
         assertEquals(MoveRotation.valueOf(expectedRotation), result);
     }
 
+    @ParameterizedTest
+    @EnumSource(MoveRotation.class)
+    void toVector_ShouldReturnCorrectVector(MoveRotation direction) {
+        // When
+        Vector2d result = direction.toVector();
+
+        // Then
+        switch (direction) {
+            case DEG_0 -> assertEquals(new Vector2d(0, 1), result);
+            case DEG_45 -> assertEquals(new Vector2d(1, 1), result);
+            case DEG_90 -> assertEquals(new Vector2d(1, 0), result);
+            case DEG_135 -> assertEquals(new Vector2d(1, -1), result);
+            case DEG_180 -> assertEquals(new Vector2d(0, -1), result);
+            case DEG_225 -> assertEquals(new Vector2d(-1, -1), result);
+            case DEG_270 -> assertEquals(new Vector2d(-1, 0), result);
+            case DEG_315 -> assertEquals(new Vector2d(-1, 1), result);
+        }
+    }
 }
