@@ -16,4 +16,5 @@ public class RandomNumberGenerator {
     public static double randomDouble() {
         return random.nextDouble();
     }
+
 }

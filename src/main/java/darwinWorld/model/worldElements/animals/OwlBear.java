@@ -50,6 +50,6 @@ public class OwlBear extends AbstractAnimal{
         }
 
         position = newPosition;
-        rotation = locationProvider.getRotation(newPosition);
+        rotation = locationProvider.getRotation(newPosition,rotation);
     }
 }

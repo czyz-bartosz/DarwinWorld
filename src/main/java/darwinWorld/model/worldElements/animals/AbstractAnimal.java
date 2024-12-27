@@ -50,8 +50,8 @@ public abstract class AbstractAnimal implements IWorldElement {
         geneCurrentIndex = geneSelectionStrategy.selectNextGene(genes, geneCurrentIndex);
         MoveRotation currentRotation = MoveRotation.add(rotation, genes.get(geneCurrentIndex));
         Vector2d newPosition = position.add(currentRotation.toVector());
+        rotation = locationProvider.getRotation(newPosition,rotation);
         position = locationProvider.getPosition(newPosition);
-        rotation = locationProvider.getRotation(newPosition);
     }
 
     public void eat(int energyFromFood) {
