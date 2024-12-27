@@ -25,8 +25,8 @@ public class AnimalReproduction {
         );
         int childEnergy = energyUsedToReproduce * 2;
 
-        parent1.setEnergy(parent1.getEnergy() - energyUsedToReproduce);
-        parent2.setEnergy(parent2.getEnergy() - energyUsedToReproduce);
+        parent1.afterReproduce(energyUsedToReproduce);
+        parent2.afterReproduce(energyUsedToReproduce);
 
         return new Animal(
                 parent1.getPosition(),
@@ -68,9 +68,7 @@ public class AnimalReproduction {
         genesIndexesToMute
                 .stream()
                 .limit(numberOfMutations)
-                .forEach((index) -> {
-                    genes.set(index, MoveRotation.randomMoveRotation());
-                });
+                .forEach((index) -> genes.set(index, MoveRotation.randomMoveRotation()));
 
         return genes;
     }

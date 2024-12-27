@@ -57,6 +57,11 @@ public class Animal extends AbstractAnimal {
         this.energy = energy;
     }
 
+    public void afterReproduce(int energyUsedToReproduce) {
+        this.energy -= energyUsedToReproduce;
+        ++numberOfChildren;
+    }
+
     @Override
     public void eat(int energyFromFood) {
         energy += energyFromFood;
