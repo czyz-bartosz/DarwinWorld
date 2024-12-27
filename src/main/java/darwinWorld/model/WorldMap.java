@@ -6,6 +6,7 @@ import darwinWorld.model.worldElements.Grass;
 import darwinWorld.model.worldElements.IWorldElement;
 import darwinWorld.model.worldElements.animals.Animal;
 import darwinWorld.model.worldElements.animals.OwlBear;
+import darwinWorld.model.worldElements.animals.AnimalReproduction;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,7 +35,7 @@ public class WorldMap implements ILocationProvider {
             Vector2d position = entry.getKey();
             List<Animal> animalList = entry.getValue();
 
-            if(animalList.size() == 1) continue;
+            if(animalList.size() <= 1) continue;
 
             List<Animal> animalsToReproduce = animalList.stream()
                     .filter((animal -> animal.getEnergy() >= requiredEnergy))
@@ -44,9 +45,17 @@ public class WorldMap implements ILocationProvider {
                             .limit(2)
                             .toList();
 
-            if(animalsToReproduce.size() == 1) continue;
+            if(animalsToReproduce.size() <= 1) continue;
 
-            //TODO: Reproduce animalsToReproduce[0] with animalsToReproduce[1] on position
+            Animal child = AnimalReproduction.reproduce(
+                    animalsToReproduce.get(0),
+                    animalsToReproduce.get(1),
+                    simulationParameters.energyUsedToReproduce(),
+                    simulationParameters.maxMutations(),
+                    simulationParameters.minMutations()
+            );
+
+            // TODO: place child on the map
         }
     }
 

@@ -6,6 +6,7 @@ import darwinWorld.model.Vector2d;
 import darwinWorld.model.worldElements.IWorldElement;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractAnimal implements IWorldElement {
@@ -41,6 +42,10 @@ public abstract class AbstractAnimal implements IWorldElement {
 
     public void setRotation(MoveRotation rotation) {
         this.rotation = rotation;
+    }
+
+    public List<MoveRotation> getGenes() {
+        return Collections.unmodifiableList(genes);
     }
 
     public void move(

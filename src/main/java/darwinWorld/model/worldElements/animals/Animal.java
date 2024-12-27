@@ -41,7 +41,7 @@ public class Animal extends AbstractAnimal {
         return energy;
     }
 
-    public void setDaysOfLife(int daysOfLife) {
+    public void setDaysOfLife(int daysOfLive) {
         this.daysOfLife = daysOfLife;
     }
 
@@ -51,6 +51,10 @@ public class Animal extends AbstractAnimal {
 
     public void setNumberOfChildren(int numberOfChildren) {
         this.numberOfChildren = numberOfChildren;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
     @Override
