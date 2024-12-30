@@ -2,6 +2,7 @@ package darwinWorld.model.worldElements.animals.geneSelectionStrategies;
 
 import darwinWorld.enums.MoveRotation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // Strategy pattern

@@ -2,6 +2,7 @@ package darwinWorld.model;
 
 import darwinWorld.enums.MoveRotation;
 import darwinWorld.model.worldElements.IWorldElement;
+import darwinWorld.utils.NoPositonException;
 import darwinWorld.utils.RandomNumberGenerator;
 
 import java.util.Map;
@@ -55,9 +56,11 @@ public class Earth {
     public Vector2d randomEquadorPosition(){ return equatorStrip.randomPosition(); }
 
     public Vector2d randomPosition(){ return boundary.randomPosition(); }
-    public Vector2d randomUnoccupiedPosition(WorldMap map){ return boundary.randomUnoccupiedPosition(map); }
+    public Vector2d randomUnoccupiedPosition(WorldMap map) throws NoPositonException {
+        return boundary.randomUnoccupiedPosition(map);
+    }
 
-    public Vector2d randomUnoccupiedPositionWithEquatorFavored(WorldMap map){
+    public Vector2d randomUnoccupiedPositionWithEquatorFavored(WorldMap map) throws NoPositonException {
         double random = RandomNumberGenerator.randomDouble();
 
         if (random < 0.8)

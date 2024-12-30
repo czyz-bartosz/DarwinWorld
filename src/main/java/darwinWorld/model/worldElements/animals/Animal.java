@@ -70,6 +70,7 @@ public class Animal extends AbstractAnimal {
     @Override
     public void move(IGeneSelectionStrategy geneSelectionStrategy, ILocationProvider locationProvider) {
         super.move(geneSelectionStrategy, locationProvider);
+        energy--;
         ++daysOfLife;
     }
 }

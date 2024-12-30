@@ -31,7 +31,7 @@ public enum MoveRotation {
     }
     public static MoveRotation randomMoveRotation(){
         int randomAngle = (int) Math.round(RandomNumberGenerator.integerFromRange(0,360) / 45.0) * 45;
-        return getMoveRotation(randomAngle);
+        return getMoveRotation(randomAngle % 360);
     }
 
     public Vector2d toVector() {

@@ -1,6 +1,7 @@
 package darwinWorld.model;
 
 import darwinWorld.enums.MoveRotation;
+import darwinWorld.utils.NoPositonException;
 import darwinWorld.utils.RandomNumberGenerator;
 
 public record Boundary(
@@ -29,12 +30,24 @@ public record Boundary(
         return position.precedes(upperRight) && position.follows(lowerLeft);
     }
 
-    public Vector2d randomUnoccupiedPosition(WorldMap map){
+    public Vector2d randomUnoccupiedPosition(WorldMap map) throws NoPositonException {
+        // tries sqrt(area) times
+        int approachLimit = (int) Math.sqrt(area()) * 10;
+        int approach = 0;
+
         Vector2d potenitalPosition = randomPosition();
 
-        while(map.isOccupied(potenitalPosition))
+        while(map.isOccupied(potenitalPosition) && ++approach <= approachLimit)
             potenitalPosition = randomAdherentPosition(potenitalPosition);
 
+        if(map.isOccupied(potenitalPosition)) throw new NoPositonException("No unoccupied position found");
+
         return potenitalPosition;
+    }
+
+    public int area(){
+        int x = upperRight().getX() - lowerLeft().getX() + 1;
+        int y = upperRight().getY() - lowerLeft().getY() + 1;
+        return x * y;
     }
 }
