@@ -14,13 +14,15 @@ import darwinWorld.model.worldElements.animals.geneSelectionStrategies.Sequentia
 import darwinWorld.utils.GeneGenerator;
 import darwinWorld.utils.MapVisualizer;
 import darwinWorld.utils.NoPositonException;
+import darwinWorld.utils.RandomNumberGenerator;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class WorldMap implements ILocationProvider {
 
     private final SimulationParameters simulationParameters;
-    private Map<Vector2d, List<Animal>> animals = new HashMap<>();
+    private Map<Vector2d, HashSet<Animal>> animals = new HashMap<>();
     private final Map<Vector2d, Grass> grass = new HashMap<>();
     private final Earth earth;
     private OwlBear owlBear;
@@ -35,14 +37,14 @@ public class WorldMap implements ILocationProvider {
 
         this.simulationParameters = sp;
 
-        if(sp.crazyMutation()) geneSelectionStrategy = new CrazyGeneSelectionStrategy();
+        if (sp.crazyMutation()) geneSelectionStrategy = new CrazyGeneSelectionStrategy();
         else geneSelectionStrategy = new SequentialGeneSelectionStrategy();
 
         this.earth = new Earth(sp.mapHeight(), sp.mapWidth(), sp.mapHeight() / 6);
 
         GeneGenerator geneGenerator = new GeneGenerator();
 
-        if(sp.withOwlBear()){
+        if (sp.withOwlBear()) {
             OwlBearTerritory generator = new OwlBearTerritory();
             List<Boundary> territory = generator.territory(earth.getBoundary());
 
@@ -52,11 +54,11 @@ public class WorldMap implements ILocationProvider {
                     geneGenerator.forLength(sp.genesLength()),
                     0,
                     territory
-                    );
+            );
         }
         this.placeGrass(sp.initialGrassAmount());
 
-        for(int i=0; i<sp.initialAnimalAmount(); i++){
+        for (int i = 0; i < sp.initialAnimalAmount(); i++) {
             Animal animal = new Animal(
                     earth.randomPosition(),
                     MoveRotation.randomMoveRotation(),
@@ -67,45 +69,28 @@ public class WorldMap implements ILocationProvider {
             placeAnimal(animal);
         }
     }
+
     public void placeAnimal(Animal animal){
-        List<Animal> animalList = animals.get(animal.getPosition());
-        if(animalList != null) animalList.add(animal);
-        animalList = new ArrayList<>();
-        animalList.add(animal);
-        animals.put(animal.getPosition(), animalList);
+        HashSet<Animal> animalSet = animals.get(animal.getPosition());
+        if (animalSet == null) animalSet = new HashSet<>();
+        animalSet.add(animal);
+        animals.put(animal.getPosition(), animalSet);
     }
 
-    public void moveOwlBear(){ owlBear.move(geneSelectionStrategy,this);}
-
     public void moveAnimals() {
-        //ugly but works
         owlBear.move(geneSelectionStrategy,this);
-        List<Animal> changedPositon = new ArrayList<>();
-        List<Vector2d> oldPositionList = new ArrayList<>();
 
-        for (List<Animal> animals : animals.values())
-            for (Animal animal : animals) {
-                Vector2d oldPosition = animal.getPosition();
-                animal.move(geneSelectionStrategy, this);
-                Vector2d newPosition = animal.getPosition();
-                if(oldPosition.equals(newPosition)) continue;
-                changedPositon.add(animal);
-                oldPositionList.add(oldPosition);
-            }
+        List<Animal> allAnimals = animals.values().stream()
+                .flatMap(Set::stream)
+                .toList();
 
-        for(int i=0; i<changedPositon.size(); i++){
-            Animal animal = changedPositon.get(i);
-            Vector2d oldPosition = oldPositionList.get(i);
-
-            List <Animal> animalList = animals.get(oldPosition);
-            animalList.remove(animal);
-            if(animalList.isEmpty()) animals.remove(oldPosition);
-
-            animals.computeIfAbsent(animal.getPosition(), k -> new ArrayList<>());
-
-            animals.get(animal.getPosition()).add(animal);
+        for(Animal animal: allAnimals){
+            Vector2d oldPosition = animal.getPosition();
+            animal.move(geneSelectionStrategy,this);
+            if(oldPosition.equals(animal.getPosition())) continue;
+            animals.get(oldPosition).remove(animal);
+            placeAnimal(animal);
         }
-
     }
 
     public void eatCycle(){
@@ -121,8 +106,8 @@ public class WorldMap implements ILocationProvider {
             Grass grass = this.grass.get(position);
             if(grass == null) continue;
 
-            List<Animal> animalList = entry.getValue();
-            Optional<Animal> strongestOptionalAnimal = animalList.stream()
+            HashSet<Animal> animalSet = animals.get(position);
+            Optional<Animal> strongestOptionalAnimal = animalSet.stream()
                     .max(Comparator.comparingInt(Animal::getEnergy)
                     .thenComparing(Animal::getDaysOfLife)
                     .thenComparing(Animal::getNumberOfChildren));
@@ -140,18 +125,17 @@ public class WorldMap implements ILocationProvider {
         int requiredEnergy = simulationParameters.minimalEnergyToReproduce();
 
 
-        for(List<Animal> animalList : animals.values()) {
-            if(animalList.size() <= 1) continue;
+        for(HashSet<Animal> animalSet : animals.values()) {
+            if(animalSet.size() <= 1) continue;
 
-            List<Animal> animalsToReproduce = animalList.stream()
-                    .filter((animal -> animal.getEnergy() >= requiredEnergy))
+            List<Animal> animalsToReproduce = animalSet.stream()
+                    .filter(animal -> animal.getEnergy() >= requiredEnergy)
                     .sorted(Comparator.comparingInt(Animal::getEnergy).reversed()
                             .thenComparing(Animal::getDaysOfLife, Comparator.reverseOrder())
                             .thenComparing(Animal::getNumberOfChildren, Comparator.reverseOrder()))
-                            .limit(2)
-                            .toList();
+                    .limit(2)
+                    .toList();
 
-            //No idea how to elegantly select animals on random when there are more than 2 with comparison parameters equal
             if(animalsToReproduce.size() <= 1) continue;
 
             Animal child = AnimalReproduction.reproduce(
@@ -162,32 +146,20 @@ public class WorldMap implements ILocationProvider {
                     simulationParameters.minMutations()
             );
 
-            animalList.add(child);
+            animalSet.add(child);
         }
     }
 
     public void removeDeadAnimals(){
 
-        ArrayList<Vector2d> emptyArraysToBeRemoved = new ArrayList<>();
+        List<Animal> allAnimals = animals.values().stream()
+                .flatMap(Set::stream)
+                .toList();
 
-        for(var entry : animals.entrySet()) {
-            Vector2d position = entry.getKey();
-            List<Animal> animalList = entry.getValue();
-
-            List<Animal> toBeRemoved = new ArrayList<>();
-
-            for (Animal animal : animalList) {
-                if (animal.getEnergy() <= 0)
-                    toBeRemoved.add(animal);
-            }
-            animalList.removeAll(toBeRemoved);
-
-            if(animalList.isEmpty())
-                emptyArraysToBeRemoved.add(position);
+        for(Animal animal : allAnimals) {
+            if(animal.getEnergy() > 0) continue;
+            animals.get(animal.getPosition()).remove(animal);
         }
-
-        for(Vector2d position : emptyArraysToBeRemoved)
-            animals.remove(position);
     }
 
     public void placeGrass(int amount){
@@ -206,8 +178,8 @@ public class WorldMap implements ILocationProvider {
     private int amountOfObjectsAt(Vector2d position){
         int amount = 0;
 
-        List<Animal> animalList = animals.get(position);
-        if(animalList != null) amount = animalList.size();
+        HashSet<Animal> animalSet = animals.get(position);
+        if(animalSet != null) amount = animalSet.size();
 
         Grass grass = this.grass.get(position);
         if(grass != null) amount += 1;
@@ -218,7 +190,6 @@ public class WorldMap implements ILocationProvider {
     }
 
     public String representationAt(Vector2d position){
-        //just so map can be looked at
 
         int amount = amountOfObjectsAt(position);
 
@@ -228,8 +199,8 @@ public class WorldMap implements ILocationProvider {
         }
         if(grass.get(position) != null) return grass.get(position).toString();
         if(owlBear != null && owlBear.getPosition().equals(position)) return owlBear.toString();
-        List<Animal> animalList = animals.get(position);
-        return animalList.getFirst().toString();
+        Animal animal = animals.get(position).iterator().next();
+        return animal.toString();
     }
 
     public List<IWorldElement> objectsAt(Vector2d position){
@@ -246,9 +217,9 @@ public class WorldMap implements ILocationProvider {
     public List<IWorldElement> getElements() {
 
         List<IWorldElement> elements = new ArrayList<>(grass.values());
-        for(List<Animal> animalList: animals.values())
-            elements.addAll(animalList);
-        if(owlBear != null) elements.add(owlBear);
+        for (HashSet<Animal> animalHash : animals.values())
+            elements.addAll(animalHash);
+        if (owlBear != null) elements.add(owlBear);
 
         return elements;
     }
