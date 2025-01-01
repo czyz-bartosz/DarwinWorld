@@ -1,6 +1,9 @@
 package darwinWorld.enums;
 
 import darwinWorld.model.Vector2d;
+import darwinWorld.utils.RandomNumberGenerator;
+
+import java.util.Random;
 
 public enum MoveRotation {
     DEG_0(0),
@@ -25,6 +28,10 @@ public enum MoveRotation {
     public static MoveRotation add(MoveRotation r1, MoveRotation r2) {
         int finalAngle = (r1.getAngle() + r2.getAngle()) % 360;
         return getMoveRotation(finalAngle);
+    }
+    public static MoveRotation randomMoveRotation(){
+        int randomAngle = (int) Math.round(RandomNumberGenerator.integerFromRange(0,360) / 45.0) * 45;
+        return getMoveRotation(randomAngle % 360);
     }
 
     public Vector2d toVector() {

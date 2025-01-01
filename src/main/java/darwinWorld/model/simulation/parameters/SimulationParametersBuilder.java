@@ -4,8 +4,8 @@ package darwinWorld.model.simulation.parameters;
 public class SimulationParametersBuilder {
     private int mapHeight = 10;
     private int mapWidth = 15;
-    private boolean withOwlBear = false;
-    private int initialGrassAmount = 40;
+    private boolean withOwlBear = true;
+    private int initialGrassAmount = 20;
     private int initialAnimalAmount = 6;
     private int initialAnimalEnergy = 10;
     private int grassGrowthPerDay = 6;

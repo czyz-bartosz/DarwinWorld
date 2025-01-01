@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Animal extends AbstractAnimal {
     private int energy;
-    private int daysOfLive = 0;
+    private int daysOfLife = 0;
     private int numberOfChildren = 0;
 
     @Override
@@ -33,16 +33,16 @@ public class Animal extends AbstractAnimal {
         this.energy = energy;
     }
 
-    public int getDaysOfLive() {
-        return daysOfLive;
+    public int getDaysOfLife() {
+        return daysOfLife;
     }
 
     public int getEnergy() {
         return energy;
     }
 
-    public void setDaysOfLive(int daysOfLive) {
-        this.daysOfLive = daysOfLive;
+    public void setDaysOfLife(int daysOfLive) {
+        this.daysOfLife = daysOfLife;
     }
 
     public int getNumberOfChildren() {
@@ -53,6 +53,15 @@ public class Animal extends AbstractAnimal {
         this.numberOfChildren = numberOfChildren;
     }
 
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public void afterReproduce(int energyUsedToReproduce) {
+        this.energy -= energyUsedToReproduce;
+        ++numberOfChildren;
+    }
+
     @Override
     public void eat(int energyFromFood) {
         energy += energyFromFood;
@@ -61,6 +70,7 @@ public class Animal extends AbstractAnimal {
     @Override
     public void move(IGeneSelectionStrategy geneSelectionStrategy, ILocationProvider locationProvider) {
         super.move(geneSelectionStrategy, locationProvider);
-        ++daysOfLive;
+        energy--;
+        ++daysOfLife;
     }
 }

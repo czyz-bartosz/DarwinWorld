@@ -6,6 +6,7 @@ import darwinWorld.model.Vector2d;
 import darwinWorld.model.worldElements.IWorldElement;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractAnimal implements IWorldElement {
@@ -43,6 +44,10 @@ public abstract class AbstractAnimal implements IWorldElement {
         this.rotation = rotation;
     }
 
+    public List<MoveRotation> getGenes() {
+        return Collections.unmodifiableList(genes);
+    }
+
     public void move(
             IGeneSelectionStrategy geneSelectionStrategy,
             ILocationProvider locationProvider
@@ -50,8 +55,8 @@ public abstract class AbstractAnimal implements IWorldElement {
         geneCurrentIndex = geneSelectionStrategy.selectNextGene(genes, geneCurrentIndex);
         MoveRotation currentRotation = MoveRotation.add(rotation, genes.get(geneCurrentIndex));
         Vector2d newPosition = position.add(currentRotation.toVector());
+        rotation = locationProvider.getRotation(newPosition,rotation);
         position = locationProvider.getPosition(newPosition);
-        rotation = locationProvider.getRotation(newPosition);
     }
 
     public void eat(int energyFromFood) {
