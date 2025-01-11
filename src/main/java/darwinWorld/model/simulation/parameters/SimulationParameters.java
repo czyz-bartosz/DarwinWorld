@@ -3,6 +3,7 @@ package darwinWorld.model.simulation.parameters;
 public record SimulationParameters(
         int mapHeight,
         int mapWidth,
+        int equatorSpan,
         boolean withOwlBear,
         int initialGrassAmount,
         int initialAnimalAmount,

@@ -1,5 +1,6 @@
 package darwinWorld.model;
 
+import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.simulation.parameters.SimulationParameters;
 import darwinWorld.model.simulation.parameters.SimulationParametersBuilder;
 
@@ -9,7 +10,8 @@ public class Simulation implements Runnable {
     private WorldMap map;
 
     public Simulation() {
-        sp = new SimulationParametersBuilder().build();
+        SimulationParametersBuilder sb = new SimulationParametersBuilder();
+        sp = sb.build();
         map = new WorldMap(sp);
     }
 
@@ -26,11 +28,7 @@ public class Simulation implements Runnable {
     }
 
     public void step(){
-        map.removeDeadAnimals();
-        map.moveAnimals();
-        map.eatCycle();
-        map.reproduceAnimals();
-        map.placeGrass(sp.grassGrowthPerDay());
+        map.step();
     }
 
 }

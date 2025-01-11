@@ -1,4 +1,4 @@
-package darwinWorld.model;
+package darwinWorld.model.map;
 
 import darwinWorld.enums.MoveRotation;
 import darwinWorld.utils.NoPositonException;

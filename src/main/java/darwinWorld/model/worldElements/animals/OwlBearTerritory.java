@@ -1,7 +1,7 @@
 package darwinWorld.model.worldElements.animals;
 
-import darwinWorld.model.Boundary;
-import darwinWorld.model.Vector2d;
+import darwinWorld.model.map.Boundary;
+import darwinWorld.model.map.Vector2d;
 import darwinWorld.utils.RandomNumberGenerator;
 
 import java.util.ArrayList;

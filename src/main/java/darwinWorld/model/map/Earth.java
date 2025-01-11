@@ -1,12 +1,7 @@
-package darwinWorld.model;
+package darwinWorld.model.map;
 
-import darwinWorld.enums.MoveRotation;
-import darwinWorld.model.worldElements.IWorldElement;
 import darwinWorld.utils.NoPositonException;
 import darwinWorld.utils.RandomNumberGenerator;
-
-import java.util.Map;
-import java.util.Vector;
 
 public class Earth {
 
@@ -16,16 +11,7 @@ public class Earth {
     private final Boundary equatorStrip;
     private final Boundary southernHemisphere;
 
-    public Earth(int mapHeight, int mapWidth, int equadorSpan) throws IllegalArgumentException {
-        if(mapHeight <= 0 || mapWidth <= 0){
-            throw new IllegalArgumentException("Map dimensions cannot be zero or negative");
-        }
-        if(equadorSpan < 0){
-            throw new IllegalArgumentException("Equador span cannot be negative");
-        }
-        if(equadorSpan >= mapHeight/2) {
-            throw new IllegalArgumentException("Equador cannot cover either hemisphere");
-        }
+    public Earth(int mapHeight, int mapWidth, int equadorSpan){
 
         Vector2d lowerLeft = new Vector2d(0,0);
         Vector2d upperRight = new Vector2d(mapWidth, mapHeight);

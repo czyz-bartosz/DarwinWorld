@@ -1,8 +1,8 @@
 package darwinWorld.model.worldElements.animals;
 
 import darwinWorld.enums.MoveRotation;
-import darwinWorld.model.ILocationProvider;
-import darwinWorld.model.Vector2d;
+import darwinWorld.model.map.ILocationProvider;
+import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 
 import java.util.List;

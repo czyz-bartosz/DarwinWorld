@@ -9,15 +9,16 @@ class SimulationParametersValidatorTest {
 
     @ParameterizedTest
     @CsvSource({
-            "3, 4",
-            "1, 1",
-            "1, 5",
-            "5, 1"
+            "3, 4, 1",
+            "1, 2, 0",
+            "1, 5, 1",
+            "5, 2, 0"
     })
-    void validateMapSize_WithValidValues_DoesNotThrowException(int width, int height) {
+    void validateMapSize_WithValidValues_DoesNotThrowException(int width, int height, int equatorSpan) {
         SimulationParameters params = new SimulationParametersBuilder()
                 .setMapHeight(height)
                 .setMapWidth(width)
+                .setEquatorSpan(equatorSpan)
                 .build();
 
         assertDoesNotThrow(() -> SimulationParametersValidator.validate(params));
@@ -35,7 +36,36 @@ class SimulationParametersValidatorTest {
                 .build();
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> SimulationParametersValidator.validate(params));
-        assertEquals("mapHeight must be greater than 0", exception.getMessage());
+        assertEquals("mapHeight must be greater than 1", exception.getMessage());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "-1",
+            "-3",
+            "-10"
+    })
+    void validateEquatorSpan_WithNegativeSpan_ThrowsException(int equatorSpan) {
+        SimulationParameters params = new SimulationParametersBuilder()
+                .setEquatorSpan(equatorSpan)
+                .build();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> SimulationParametersValidator.validate(params));
+        assertEquals("Equator span cannot be negative", exception.getMessage());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0",
+            "1",
+            "4"
+    })
+    void validateEquatorSpan_WithValidSpan_DoesNotThrowException(int equatorSpan) {
+        SimulationParameters params = new SimulationParametersBuilder()
+                .setEquatorSpan(equatorSpan)
+                .build();
+
+        assertDoesNotThrow(() -> SimulationParametersValidator.validate(params));
     }
 
     @ParameterizedTest
@@ -44,6 +74,7 @@ class SimulationParametersValidatorTest {
             "-1",
             "-100"
     })
+
     void validateMapSize_WithInvalidWidth_ThrowsException(int width) {
         SimulationParameters params = new SimulationParametersBuilder()
                 .setMapWidth(width)

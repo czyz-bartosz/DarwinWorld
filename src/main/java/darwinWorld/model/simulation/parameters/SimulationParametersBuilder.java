@@ -1,10 +1,12 @@
 package darwinWorld.model.simulation.parameters;
 
 // Builder - creational design pattern for SimulationParameters
+
 public class SimulationParametersBuilder {
     private int mapHeight = 10;
     private int mapWidth = 15;
-    private boolean withOwlBear = true;
+    private int equatorSpan = 2;
+    private boolean withOwlBear = false;
     private int initialGrassAmount = 20;
     private int initialAnimalAmount = 6;
     private int initialAnimalEnergy = 10;
@@ -27,7 +29,10 @@ public class SimulationParametersBuilder {
         this.mapWidth = mapWidth;
         return this;
     }
-
+    public SimulationParametersBuilder setEquatorSpan(int equatorSpan) {
+        this.equatorSpan = equatorSpan;
+        return this;
+    }
     public SimulationParametersBuilder setWithOwlBear(boolean withOwlBear) {
         this.withOwlBear = withOwlBear;
         return this;
@@ -97,6 +102,7 @@ public class SimulationParametersBuilder {
         return new SimulationParameters(
                 mapHeight,
                 mapWidth,
+                equatorSpan,
                 withOwlBear,
                 initialGrassAmount,
                 initialAnimalAmount,
@@ -112,4 +118,5 @@ public class SimulationParametersBuilder {
                 saveToCSV
         );
     }
+
 }
