@@ -5,12 +5,12 @@ import darwinWorld.model.map.ILocationProvider;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 
-import java.util.List;
+import java.util.*;
 
 public class Animal extends AbstractAnimal {
     private int energy;
-    private int daysOfLife = 0;
-    private int numberOfChildren = 0;
+    private final AnimalStats stats = new AnimalStats(this);
+    private final Collection<Animal> children = new HashSet<>();
 
     @Override
     public String toString() {
@@ -33,44 +33,51 @@ public class Animal extends AbstractAnimal {
         this.energy = energy;
     }
 
-    public int getDaysOfLife() {
-        return daysOfLife;
+    public Collection<Animal> getChildren() {
+        return Collections.unmodifiableCollection(children);
+    }
+
+    public Collection<Animal> getDescendants() {
+        HashSet<Animal> descendants = new HashSet<>(this.getChildren());
+
+        for(Animal child : children) {
+            descendants.addAll(child.getDescendants());
+        }
+
+        return descendants;
+    }
+
+    public AnimalStats getStats() {
+        return stats;
     }
 
     public int getEnergy() {
         return energy;
     }
 
-    public void setDaysOfLife(int daysOfLive) {
-        this.daysOfLife = daysOfLife;
-    }
-
-    public int getNumberOfChildren() {
-        return numberOfChildren;
-    }
-
-    public void setNumberOfChildren(int numberOfChildren) {
-        this.numberOfChildren = numberOfChildren;
-    }
-
     public void setEnergy(int energy) {
         this.energy = energy;
     }
 
-    public void afterReproduce(int energyUsedToReproduce) {
+    public void afterReproduce(int energyUsedToReproduce, Animal child) {
         this.energy -= energyUsedToReproduce;
-        ++numberOfChildren;
+        children.add(child);
+    }
+
+    public void kill(int currentDay) {
+        stats.setDayOfDeath(currentDay);
     }
 
     @Override
     public void eat(int energyFromFood) {
         energy += energyFromFood;
+        stats.incrementNumberOfEatenGrass();
     }
 
     @Override
     public void move(IGeneSelectionStrategy geneSelectionStrategy, ILocationProvider locationProvider) {
         super.move(geneSelectionStrategy, locationProvider);
         energy--;
-        ++daysOfLife;
+        stats.incrementNumberOfDaysOfLife();
     }
 }

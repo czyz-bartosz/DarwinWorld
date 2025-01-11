@@ -25,16 +25,18 @@ public class AnimalReproduction {
         );
         int childEnergy = energyUsedToReproduce * 2;
 
-        parent1.afterReproduce(energyUsedToReproduce);
-        parent2.afterReproduce(energyUsedToReproduce);
-
-        return new Animal(
+        Animal child = new Animal(
                 parent1.getPosition(),
                 MoveRotation.randomMoveRotation(),
                 childGene,
                 0,
                 childEnergy
         );
+
+        parent1.afterReproduce(energyUsedToReproduce, child);
+        parent2.afterReproduce(energyUsedToReproduce, child);
+
+        return child;
     }
 
     private static List<MoveRotation> generateGenotype(

@@ -1,14 +1,15 @@
-package darwinWorld.model.worldElements.animals;
+package darwinWorld.model.worldElements.animals.owlBear;
 
 import darwinWorld.enums.MoveRotation;
 import darwinWorld.model.map.Boundary;
 import darwinWorld.model.map.ILocationProvider;
 import darwinWorld.model.map.Vector2d;
+import darwinWorld.model.worldElements.animals.AbstractAnimal;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 
 import java.util.List;
 
-public class OwlBear extends AbstractAnimal{
+public class OwlBear extends AbstractAnimal {
     private final List<Boundary> territory;
 
     @Override

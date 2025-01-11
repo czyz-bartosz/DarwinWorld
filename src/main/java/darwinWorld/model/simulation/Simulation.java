@@ -1,4 +1,4 @@
-package darwinWorld.model;
+package darwinWorld.model.simulation;
 
 import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.simulation.parameters.SimulationParameters;

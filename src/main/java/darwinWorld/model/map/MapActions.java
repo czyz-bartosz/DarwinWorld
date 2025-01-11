@@ -4,7 +4,6 @@ import darwinWorld.model.simulation.parameters.SimulationParameters;
 import darwinWorld.model.worldElements.Grass;
 import darwinWorld.model.worldElements.animals.Animal;
 import darwinWorld.model.worldElements.animals.AnimalReproduction;
-import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 import darwinWorld.utils.NoPositonException;
 
 import java.util.*;
@@ -48,8 +47,10 @@ public class MapActions {
 
         //Owl bear eats all animals on his tile
         if(simulationParameters.withOwlBear() &&  map.getAnimals().get(map.getOwlBear().getPosition()) != null){
-            for(Animal animal : map.getAnimals().get(map.getOwlBear().getPosition()))
+            for(Animal animal : map.getAnimals().get(map.getOwlBear().getPosition())) {
                 animal.setEnergy(-1); //placeholder for being eaten by an owl bear
+//                animal.kill(currentDay)
+            }
             map.getAnimals().remove(map.getOwlBear().getPosition());
         }
 
@@ -61,13 +62,13 @@ public class MapActions {
             HashSet<Animal> animalSet = map.getAnimals().get(position);
             Optional<Animal> strongestOptionalAnimal = animalSet.stream()
                     .max(Comparator.comparingInt(Animal::getEnergy)
-                            .thenComparing(Animal::getDaysOfLife)
-                            .thenComparing(Animal::getNumberOfChildren));
+                            .thenComparing((Animal animal) -> animal.getStats().getNumberOfDaysOfLife())
+                            .thenComparing((Animal animal) -> animal.getStats().getNumberOfChildren()));
 
             Animal strongestAnimal = strongestOptionalAnimal.orElse(null);
             if(strongestAnimal == null) continue;
 
-            strongestAnimal.setEnergy(strongestAnimal.getEnergy() + this.simulationParameters.grassEnergy());
+            strongestAnimal.eat(this.simulationParameters.grassEnergy());
             this.map.getGrass().remove(position);
         }
 
@@ -82,8 +83,14 @@ public class MapActions {
             List<Animal> animalsToReproduce = animalSet.stream()
                     .filter(animal -> animal.getEnergy() >= requiredEnergy)
                     .sorted(Comparator.comparingInt(Animal::getEnergy).reversed()
-                            .thenComparing(Animal::getDaysOfLife, Comparator.reverseOrder())
-                            .thenComparing(Animal::getNumberOfChildren, Comparator.reverseOrder()))
+                    .thenComparing(
+                        (Animal animal) -> animal.getStats().getNumberOfDaysOfLife(),
+                        Comparator.reverseOrder()
+                    )
+                    .thenComparing(
+                        (Animal animal) -> animal.getStats().getNumberOfChildren(),
+                        Comparator.reverseOrder())
+                    )
                     .limit(2)
                     .toList();
 
@@ -125,6 +132,7 @@ public class MapActions {
 
         for(Animal animal : allAnimals) {
             if(animal.getEnergy() > 0) continue;
+//            animal.kill(currentDay)
             map.getAnimals().get(animal.getPosition()).remove(animal);
         }
     }

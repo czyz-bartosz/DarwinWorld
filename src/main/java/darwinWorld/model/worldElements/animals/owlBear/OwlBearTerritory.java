@@ -1,4 +1,4 @@
-package darwinWorld.model.worldElements.animals;
+package darwinWorld.model.worldElements.animals.owlBear;
 
 import darwinWorld.model.map.Boundary;
 import darwinWorld.model.map.Vector2d;
