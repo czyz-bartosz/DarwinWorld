@@ -1,6 +1,6 @@
 package darwinWorld.enums;
 
-import darwinWorld.model.Vector2d;
+import darwinWorld.model.map.Vector2d;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;

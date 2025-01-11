@@ -1,12 +1,11 @@
 package darwinWorld.model.worldElements.animals;
 
 import darwinWorld.enums.MoveRotation;
-import darwinWorld.model.Boundary;
-import darwinWorld.model.ILocationProvider;
-import darwinWorld.model.Vector2d;
+import darwinWorld.model.map.Boundary;
+import darwinWorld.model.map.ILocationProvider;
+import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OwlBear extends AbstractAnimal{

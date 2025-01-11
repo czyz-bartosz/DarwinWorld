@@ -4,18 +4,27 @@ public class SimulationParametersValidator {
 
     public static void validate(SimulationParameters parameters) {
         validateMapSize(parameters);
+        validateEquatorSpan(parameters);
         validateInitialParameters(parameters);
         validateReproductionParameters(parameters);
         validateGenesParameters(parameters);
     }
 
     private static void validateMapSize(SimulationParameters parameters) {
-        if (parameters.mapHeight() <= 0) {
-            throw new IllegalArgumentException("mapHeight must be greater than 0");
+        if (parameters.mapHeight() <= 1) {
+            throw new IllegalArgumentException("mapHeight must be greater than 1");
         }
 
         if (parameters.mapWidth() <= 0) {
             throw new IllegalArgumentException("mapWidth must be greater than 0");
+        }
+    }
+    private static void validateEquatorSpan(SimulationParameters parameters) {
+        if(parameters.equatorSpan() < 0){
+            throw new IllegalArgumentException("Equator span cannot be negative");
+        }
+        if(parameters.equatorSpan() >= parameters.mapHeight()/2) {
+            throw new IllegalArgumentException("Equator cannot cover either hemisphere");
         }
     }
 

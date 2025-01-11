@@ -14,8 +14,9 @@ class SimulationParametersBuilderTest {
         // Then
         assertEquals(10, defaultParams.mapHeight());
         assertEquals(15, defaultParams.mapWidth());
+        assertEquals(2, defaultParams.equatorSpan());
         assertFalse(defaultParams.withOwlBear());
-        assertEquals(40, defaultParams.initialGrassAmount());
+        assertEquals(20, defaultParams.initialGrassAmount());
         assertEquals(6, defaultParams.initialAnimalAmount());
         assertEquals(10, defaultParams.initialAnimalEnergy());
         assertEquals(6, defaultParams.grassGrowthPerDay());
@@ -35,6 +36,7 @@ class SimulationParametersBuilderTest {
         SimulationParameters customParams = new SimulationParametersBuilder()
                 .setMapHeight(20)
                 .setMapWidth(25)
+                .setEquatorSpan(5)
                 .setWithOwlBear(true)
                 .setInitialGrassAmount(100)
                 .setInitialAnimalAmount(15)
@@ -53,6 +55,7 @@ class SimulationParametersBuilderTest {
         // Then
         assertEquals(20, customParams.mapHeight());
         assertEquals(25, customParams.mapWidth());
+        assertEquals(5, customParams.equatorSpan());
         assertTrue(customParams.withOwlBear());
         assertEquals(100, customParams.initialGrassAmount());
         assertEquals(15, customParams.initialAnimalAmount());

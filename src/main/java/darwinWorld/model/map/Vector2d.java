@@ -1,4 +1,4 @@
-package darwinWorld.model;
+package darwinWorld.model.map;
 
 import java.util.Objects;
 

@@ -1,9 +1,7 @@
 package darwinWorld.enums;
 
-import darwinWorld.model.Vector2d;
+import darwinWorld.model.map.Vector2d;
 import darwinWorld.utils.RandomNumberGenerator;
-
-import java.util.Random;
 
 public enum MoveRotation {
     DEG_0(0),

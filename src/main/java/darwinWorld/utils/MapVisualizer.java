@@ -1,7 +1,7 @@
 package darwinWorld.utils;
 
-import darwinWorld.model.Vector2d;
-import darwinWorld.model.WorldMap;
+import darwinWorld.model.map.Vector2d;
+import darwinWorld.model.map.WorldMap;
 
 /**
  * The map visualizer converts the {@link WorldMap} map into a string

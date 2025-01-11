@@ -1,10 +1,11 @@
 package darwinWorld.model;
 
+import darwinWorld.model.map.Boundary;
+import darwinWorld.model.map.Earth;
+import darwinWorld.model.map.Vector2d;
 import darwinWorld.utils.RandomNumberGenerator;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.ConvertWith;
-import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
