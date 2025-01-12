@@ -44,14 +44,17 @@ public class MapActions {
     }
 
     public void eatCycle(){
-
         //Owl bear eats all animals on his tile
-        if(simulationParameters.withOwlBear() &&  map.getAnimals().get(map.getOwlBear().getPosition()) != null){
-            for(Animal animal : map.getAnimals().get(map.getOwlBear().getPosition())) {
-                animal.setEnergy(-1); //placeholder for being eaten by an owl bear
+        if(simulationParameters.withOwlBear()){
+            map.getOwlBear().ifPresent((owlBear -> {
+                if(map.getAnimals().get(owlBear.getPosition()) != null) {
+                    for(Animal animal : map.getAnimals().get(owlBear.getPosition())) {
+                        animal.setEnergy(-1); //placeholder for being eaten by an owl bear
 //                animal.kill(currentDay)
-            }
-            map.getAnimals().remove(map.getOwlBear().getPosition());
+                    }
+                    map.getAnimals().remove(owlBear.getPosition());
+                }
+            }));
         }
 
         for(var entry : map.getAnimals().entrySet()) {
@@ -109,31 +112,32 @@ public class MapActions {
     }
 
     public void moveAnimals() {
-        if(simulationParameters.withOwlBear()) map.getOwlBear().move(map.getGeneSelectionStrategy(),map);
+        if(simulationParameters.withOwlBear()) {
+            map.getOwlBear().ifPresent(
+                (owlBear) -> owlBear.move(map.getGeneSelectionStrategy(),map));
+        }
 
-        List<Animal> allAnimals = map.getAnimals().values().stream()
-                .flatMap(Set::stream)
-                .toList();
+        Collection<Animal> allAnimals = WorldMapUtils.getCollectionOfAnimals(map);
 
         for(Animal animal: allAnimals){
             Vector2d oldPosition = animal.getPosition();
             animal.move(map.getGeneSelectionStrategy(),map);
             if(oldPosition.equals(animal.getPosition())) continue;
             map.getAnimals().get(oldPosition).remove(animal);
+            if(map.getAnimals().get(oldPosition).isEmpty()) map.getAnimals().remove(oldPosition);
             placeAnimal(animal);
         }
     }
 
     public void removeDeadAnimals(){
 
-        List<Animal> allAnimals = map.getAnimals().values().stream()
-                .flatMap(Set::stream)
-                .toList();
+        Collection<Animal> allAnimals = WorldMapUtils.getCollectionOfAnimals(map);
 
         for(Animal animal : allAnimals) {
             if(animal.getEnergy() > 0) continue;
 //            animal.kill(currentDay)
             map.getAnimals().get(animal.getPosition()).remove(animal);
+            if(map.getAnimals().get(animal.getPosition()).isEmpty()) map.getAnimals().remove(animal.getPosition());
         }
     }
 }

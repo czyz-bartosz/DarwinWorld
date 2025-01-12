@@ -1,11 +1,14 @@
 package darwinWorld.model.simulation;
 
 import darwinWorld.model.map.WorldMap;
+import darwinWorld.model.map.WorldMapUtils;
 import darwinWorld.model.simulation.parameters.SimulationParameters;
 import darwinWorld.model.simulation.parameters.SimulationParametersBuilder;
 
-public class Simulation implements Runnable {
+import java.util.UUID;
 
+public class Simulation implements Runnable {
+    private final UUID uuid = UUID.randomUUID();
     private SimulationParameters sp;
     private WorldMap map;
 
@@ -13,6 +16,14 @@ public class Simulation implements Runnable {
         SimulationParametersBuilder sb = new SimulationParametersBuilder();
         sp = sb.build();
         map = new WorldMap(sp);
+    }
+
+    public WorldMap getMap() {
+        return map;
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 
     public void run() {

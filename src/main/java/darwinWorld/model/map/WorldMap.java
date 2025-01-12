@@ -66,7 +66,7 @@ public class WorldMap implements ILocationProvider {
     public Map<Vector2d, HashSet<Animal>> getAnimals() { return animals; }
     public IGeneSelectionStrategy getGeneSelectionStrategy() { return geneSelectionStrategy; }
     public Map<Vector2d, Grass> getGrass() { return grass; }
-    public OwlBear getOwlBear() { return owlBear; }
+    public Optional<OwlBear> getOwlBear() { return Optional.ofNullable(owlBear); }
     public Earth getEarth() { return earth; }
 
     public void step(){
@@ -138,13 +138,13 @@ public class WorldMap implements ILocationProvider {
         if(mapBoundary.contains(oldPosition)) return oldPosition;
 
         //Corners, position gets assigned to a corner
-        if(oldPosition.getX() + 1 == mapBoundary.upperRight().getX() && oldPosition.getY() + 1 == mapBoundary.upperRight().getY())
+        if(oldPosition.getX() - 1 == mapBoundary.upperRight().getX() && oldPosition.getY() - 1 == mapBoundary.upperRight().getY())
             return new Vector2d(oldPosition.getX() - 1, oldPosition.getY() - 1);
 
-        if(oldPosition.getX() + 1 == mapBoundary.upperRight().getX() && oldPosition.getY() ==  -1)
+        if(oldPosition.getX() - 1 == mapBoundary.upperRight().getX() && oldPosition.getY() ==  -1)
             return new Vector2d(oldPosition.getX() - 1, 0);
 
-        if(oldPosition.getX() == -1 && oldPosition.getY() + 1 == mapBoundary.upperRight().getY() + 1)
+        if(oldPosition.getX() == -1 && oldPosition.getY() - 1 == mapBoundary.upperRight().getY())
             return new Vector2d(0, oldPosition.getY() - 1);
 
         if(oldPosition.getX()  == -1 && oldPosition.getY() == -1)
@@ -157,9 +157,15 @@ public class WorldMap implements ILocationProvider {
         if(oldPosition.getX() == -1)
             return new Vector2d(mapBoundary.upperRight().getX(), oldPosition.getY());
 
-        //Top or bottom, position remains the same
-        return oldPosition;
+        if(oldPosition.getY() > mapBoundary.upperRight().getY()) {
+            return new Vector2d(oldPosition.getX(), mapBoundary.upperRight().getY());
+        }
 
+        if(oldPosition.getY() < mapBoundary.lowerLeft().getY()) {
+            return new Vector2d(oldPosition.getX(), mapBoundary.lowerLeft().getY());
+        }
+
+        return oldPosition;
     }
 
     public MoveRotation getRotation(Vector2d oldPosition, MoveRotation rotation) {
