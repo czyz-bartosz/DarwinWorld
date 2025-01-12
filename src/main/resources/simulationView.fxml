@@ -8,19 +8,26 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="darwinWorld.controllers.SimulationController">
+<VBox
+        xmlns="http://javafx.com/javafx/23.0.1"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="darwinWorld.controllers.SimulationController"
+        prefWidth="1000"
+        prefHeight="800"
+>
    <children>
-      <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <items>
-          <Button mnemonicParsing="false" text="STOP" />
-        </items>
-      </ToolBar>
-      <SplitPane dividerPositions="0.35785953177257523" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <ToolBar prefHeight="40.0" VBox.vgrow="NEVER">
          <items>
-            <ScrollPane prefHeight="398.0" prefWidth="453.0" />
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+            <Button mnemonicParsing="false" text="STOP" />
+         </items>
+      </ToolBar>
+      <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
+         <items>
+            <ScrollPane fitToWidth="true" fitToHeight="true">
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" fitToHeight="true">
                <content>
-                  <GridPane>
+                  <GridPane fx:id="mapGridPane" gridLinesVisible="true" VBox.vgrow="ALWAYS">
                   </GridPane>
                </content>
             </ScrollPane>

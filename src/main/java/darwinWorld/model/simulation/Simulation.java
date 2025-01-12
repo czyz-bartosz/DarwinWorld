@@ -1,5 +1,6 @@
 package darwinWorld.model.simulation;
 
+import darwinWorld.controllers.SimulationController;
 import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.map.WorldMapUtils;
 import darwinWorld.model.simulation.parameters.SimulationParameters;
@@ -11,11 +12,17 @@ public class Simulation implements Runnable {
     private final UUID uuid = UUID.randomUUID();
     private SimulationParameters sp;
     private WorldMap map;
+    private SimulationController controller;
 
     public Simulation() {
         SimulationParametersBuilder sb = new SimulationParametersBuilder();
         sp = sb.build();
         map = new WorldMap(sp);
+    }
+
+    public Simulation(SimulationController simulationController) {
+        this();
+        controller = simulationController;
     }
 
     public WorldMap getMap() {
@@ -29,9 +36,12 @@ public class Simulation implements Runnable {
     public void run() {
         for(int i = 0; i < 10; i++) {
             System.out.println(map.toString());
+            if(controller != null) {
+                controller.update();
+            }
             step();
             try {
-                Thread.sleep(0);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
