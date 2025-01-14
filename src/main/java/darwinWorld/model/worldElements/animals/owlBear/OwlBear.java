@@ -23,7 +23,7 @@ public class OwlBear extends AbstractAnimal {
         return "O";
     }
 
-    public Node getGraphicalRepresentation() {
+    public Pane getGraphicalRepresentation() {
         StackPane pane = new StackPane();
 
         Circle circle = new Circle();

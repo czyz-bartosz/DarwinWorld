@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.ToolBar?>
@@ -15,9 +16,10 @@
    <children>
       <ToolBar prefHeight="40.0" VBox.vgrow="NEVER">
          <items>
-            <Button mnemonicParsing="false" text="STOP" />
-            <Button mnemonicParsing="false" text="SHOW DOMINANT" />
-            <Button mnemonicParsing="false" text="SHOW PREFERED CELLS" />
+            <Button fx:id="stopBtn" mnemonicParsing="false" onAction="#onClickStopBtn" text="STOP" />
+            <Button mnemonicParsing="false" onAction="#onClickShowDominantBtn" text="SHOW DOMINANT" />
+            <Button mnemonicParsing="false" onAction="#onClickShowPreferredCellsBtn" text="SHOW PREFERRED CELLS" />
+            <ChoiceBox disable="true" onAction="#onChoiceAnimalChoiceBox" fx:id="animalChoiceBox" prefWidth="150.0" />
          </items>
       </ToolBar>
       <SplitPane dividerPositions="0.2" VBox.vgrow="ALWAYS">
@@ -108,7 +110,7 @@
                               <HBox spacing="10.0" VBox.vgrow="NEVER">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Genotype" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="genotypeField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -117,7 +119,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current index of genotype" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="currentIndexOfGenotypeField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -126,7 +128,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Energy" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="energyField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -135,7 +137,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eaten grass" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="eatenGrassField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -144,7 +146,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of children" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="numberOfChildrenField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -153,7 +155,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of descendants" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="numberOfDescendantsField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -162,7 +164,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Days of life" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="daysOfLifeField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -171,7 +173,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Day of death" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="dayOfDeathField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />

@@ -23,7 +23,7 @@ public class Animal extends AbstractAnimal {
         return "A";
     }
 
-    public Node getGraphicalRepresentation() {
+    public Pane getGraphicalRepresentation() {
         StackPane pane = new StackPane();
 
         Circle circle = new Circle();

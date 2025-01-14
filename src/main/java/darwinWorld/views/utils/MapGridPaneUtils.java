@@ -4,8 +4,10 @@ import darwinWorld.model.map.Boundary;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.worldElements.IWorldElement;
+import darwinWorld.model.worldElements.animals.Animal;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 
 public class MapGridPaneUtils {
@@ -15,7 +17,7 @@ public class MapGridPaneUtils {
         mapGridPane.getRowConstraints().clear();
     }
 
-    public static void generateGrid(GridPane mapGridPane, WorldMap worldMap) {
+    public static void generateGrid(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal) {
         clearGrid(mapGridPane);
         Boundary bounds = worldMap.getEarth().getBoundary();
         int shiftX = bounds.lowerLeft().getX();
@@ -39,7 +41,11 @@ public class MapGridPaneUtils {
                     continue;
                 }
                 IWorldElement worldElement = worldMap.objectsAt(new Vector2d(x, y)).iterator().next();
-                mapGridPane.add(worldElement.getGraphicalRepresentation(), x - shiftX, height - y + shiftY);
+                Pane pane = worldElement.getGraphicalRepresentation();
+                if(worldElement == selectedAnimal) {
+                    pane.setStyle("-fx-border-color: red");
+                }
+                mapGridPane.add(pane, x - shiftX, height - y + shiftY);
             }
         }
     }

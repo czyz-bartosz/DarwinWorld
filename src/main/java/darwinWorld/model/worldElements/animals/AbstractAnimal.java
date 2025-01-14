@@ -27,6 +27,10 @@ public abstract class AbstractAnimal implements IWorldElement {
         this.geneCurrentIndex = geneCurrentIndex;
     }
 
+    public int getGeneCurrentIndex() {
+        return geneCurrentIndex;
+    }
+
     @Override
     public Vector2d getPosition() {
         return position;

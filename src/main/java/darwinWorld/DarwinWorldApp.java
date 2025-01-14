@@ -16,7 +16,6 @@ public class DarwinWorldApp extends Application {
         VBox viewRoot = fxmlLoader.load();
         configureStage(primaryStage, viewRoot);
         SimulationController controller = fxmlLoader.getController();
-        controller.init();
         primaryStage.sizeToScene();
         primaryStage.show();
     }

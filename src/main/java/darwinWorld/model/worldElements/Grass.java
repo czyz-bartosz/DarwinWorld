@@ -22,7 +22,7 @@ public class Grass implements IWorldElement{
     }
 
     @Override
-    public Node getGraphicalRepresentation() {
+    public Pane getGraphicalRepresentation() {
         Pane pane = new Pane();
         pane.setStyle("-fx-background-color: green");
         return pane;
