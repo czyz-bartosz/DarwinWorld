@@ -6,6 +6,12 @@ import darwinWorld.model.map.ILocationProvider;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.worldElements.animals.AbstractAnimal;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
+import javafx.beans.binding.Bindings;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.util.List;
 
@@ -15,6 +21,18 @@ public class OwlBear extends AbstractAnimal {
     @Override
     public String toString() {
         return "O";
+    }
+
+    public Node getGraphicalRepresentation() {
+        StackPane pane = new StackPane();
+
+        Circle circle = new Circle();
+        circle.setFill(Color.web("#fc8803"));
+        circle.radiusProperty().bind(Bindings.min(
+                pane.widthProperty(), pane.heightProperty()).divide(3));
+        pane.getChildren().add(circle);
+
+        return pane;
     }
 
     public OwlBear(

@@ -4,11 +4,8 @@ import darwinWorld.model.map.Boundary;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.worldElements.IWorldElement;
-import javafx.geometry.HPos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
 public class MapGridPaneUtils {
@@ -27,12 +24,12 @@ public class MapGridPaneUtils {
 
         for (int x = bounds.lowerLeft().getX(); x <= bounds.upperRight().getX(); x++) {
             ColumnConstraints column = new ColumnConstraints();
-            column.setHgrow(Priority.ALWAYS);
+            column.setMinWidth(10);
             mapGridPane.getColumnConstraints().add(column);
         }
         for (int y = bounds.lowerLeft().getY(); y <= bounds.upperRight().getY(); y++) {
             RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
+            row.setMinHeight(10);
             mapGridPane.getRowConstraints().add(row);
         }
 
@@ -42,10 +39,7 @@ public class MapGridPaneUtils {
                     continue;
                 }
                 IWorldElement worldElement = worldMap.objectsAt(new Vector2d(x, y)).iterator().next();
-                String labelContent = worldElement != null ? worldElement.toString() : "";
-                Label label = new Label(labelContent);
-                mapGridPane.add(label, x - shiftX, height - y + shiftY);
-                GridPane.setHalignment(label, HPos.CENTER);
+                mapGridPane.add(worldElement.getGraphicalRepresentation(), x - shiftX, height - y + shiftY);
             }
         }
     }

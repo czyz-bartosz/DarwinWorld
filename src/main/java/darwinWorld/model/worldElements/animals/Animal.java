@@ -4,6 +4,12 @@ import darwinWorld.enums.MoveRotation;
 import darwinWorld.model.map.ILocationProvider;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
+import javafx.beans.binding.Bindings;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.util.*;
 
@@ -15,6 +21,17 @@ public class Animal extends AbstractAnimal {
     @Override
     public String toString() {
         return "A";
+    }
+
+    public Node getGraphicalRepresentation() {
+        StackPane pane = new StackPane();
+
+        Circle circle = new Circle();
+        circle.setFill(Color.web("#ef0707"));
+        pane.getChildren().add(circle);
+        circle.radiusProperty().bind(Bindings.min(
+                pane.widthProperty(), pane.heightProperty()).divide(3));
+        return pane;
     }
 
     public Animal(
