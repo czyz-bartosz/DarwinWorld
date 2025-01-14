@@ -31,7 +31,7 @@ public class OwlBear extends AbstractAnimal {
         circle.radiusProperty().bind(Bindings.min(
                 pane.widthProperty(), pane.heightProperty()).divide(3));
         pane.getChildren().add(circle);
-
+        pane.setStyle("-fx-background-color: transparent;");
         return pane;
     }
 

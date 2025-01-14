@@ -1,5 +1,6 @@
 package darwinWorld.model.map;
 
+import darwinWorld.model.simulation.Simulation;
 import darwinWorld.model.simulation.parameters.SimulationParameters;
 import darwinWorld.model.worldElements.Grass;
 import darwinWorld.model.worldElements.animals.Animal;
@@ -12,11 +13,12 @@ public class MapActions {
 
     private final SimulationParameters simulationParameters;
     private final WorldMap map;
+    private final Simulation simulation;
 
-
-    public MapActions(WorldMap map, SimulationParameters simulationParameters) {
+    public MapActions(WorldMap map, Simulation simulation) {
         this.map = map;
-        this.simulationParameters = simulationParameters;
+        this.simulation = simulation;
+        this.simulationParameters = simulation.getParameters();
     }
 
     public void placeAnimal(Animal animal){
@@ -49,6 +51,7 @@ public class MapActions {
             map.getOwlBear().ifPresent((owlBear -> {
                 if(map.getAnimals().get(owlBear.getPosition()) != null) {
                     for(Animal animal : map.getAnimals().get(owlBear.getPosition())) {
+                        simulation.getStats().onAnimalDeath(animal);
                         animal.setEnergy(-1); //placeholder for being eaten by an owl bear
 //                animal.kill(currentDay)
                     }
@@ -136,6 +139,7 @@ public class MapActions {
         for(Animal animal : allAnimals) {
             if(animal.getEnergy() > 0) continue;
 //            animal.kill(currentDay)
+            simulation.getStats().onAnimalDeath(animal);
             map.getAnimals().get(animal.getPosition()).remove(animal);
             if(map.getAnimals().get(animal.getPosition()).isEmpty()) map.getAnimals().remove(animal.getPosition());
         }

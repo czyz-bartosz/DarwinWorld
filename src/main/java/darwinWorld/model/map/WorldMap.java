@@ -1,6 +1,7 @@
 package darwinWorld.model.map;
 
 import darwinWorld.enums.MoveRotation;
+import darwinWorld.model.simulation.Simulation;
 import darwinWorld.model.simulation.parameters.SimulationParameters;
 import darwinWorld.model.worldElements.Grass;
 import darwinWorld.model.worldElements.IWorldElement;
@@ -21,15 +22,17 @@ public class WorldMap implements ILocationProvider {
     private final Map<Vector2d, Grass> grass = new HashMap<>();
     private OwlBear owlBear;
     private final IGeneSelectionStrategy geneSelectionStrategy;
+    private final Simulation simulation;
 
     private final Earth earth;
     private final MapActions mapActions;
 
     private final MapVisualizer visualizer = new MapVisualizer(this);
 
-    public WorldMap(SimulationParameters sp) {
-
-        mapActions = new MapActions(this, sp);
+    public WorldMap(Simulation simulation) {
+        this.simulation = simulation;
+        SimulationParameters sp = simulation.getParameters();
+        mapActions = new MapActions(this, simulation);
 
         if (sp.crazyMutation()) geneSelectionStrategy = new CrazyGeneSelectionStrategy();
         else geneSelectionStrategy = new SequentialGeneSelectionStrategy();
@@ -108,9 +111,9 @@ public class WorldMap implements ILocationProvider {
     public Collection<IWorldElement> objectsAt(Vector2d position){
         ArrayList<IWorldElement> objects = new ArrayList<>();
 
-        if(animals.get(position) != null) objects.addAll(animals.get(position));
-        if(grass.get(position) != null) objects.add(grass.get(position));
         if(owlBear != null && owlBear.getPosition().equals(position))objects.add(owlBear);
+        if(grass.get(position) != null) objects.add(grass.get(position));
+        if(animals.get(position) != null) objects.addAll(animals.get(position));
 
         if(objects.isEmpty()) return null;
         return objects;

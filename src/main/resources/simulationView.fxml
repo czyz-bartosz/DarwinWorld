@@ -36,7 +36,7 @@
                               <HBox spacing="10.0" VBox.vgrow="NEVER">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of animals:" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="numberOfAnimalsField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -45,7 +45,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of grass:" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="numberOfGrassField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -54,7 +54,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of free cells" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="numberOfFreeCellsField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -63,7 +63,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The most popular genotype" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                                    <Text fx:id="theMostPopularGenotypeField" strokeType="OUTSIDE" strokeWidth="0.0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -72,7 +72,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Avg energy" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="avgEnergyField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -81,7 +81,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Avg life span" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="avgLifeSpanField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -90,7 +90,7 @@
                               <HBox spacing="10.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Avg number of children" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                                    <Text fx:id="avgNumberOfChildrenField" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets />

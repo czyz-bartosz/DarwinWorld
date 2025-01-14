@@ -32,6 +32,11 @@ public class SimulationStats {
         sumOfDeadAnimalsLifeSpan += deadAnimalsLifeSpan;
     }
 
+    public void onAnimalDeath(Animal animal) {
+        incrementNumberOfDeadAnimals();
+        addDeadAnimalLifeSpan(animal.getStats().getNumberOfDaysOfLife());
+    }
+
     public int getNumberOfDeadAnimals() {
         return numberOfDeadAnimals;
     }

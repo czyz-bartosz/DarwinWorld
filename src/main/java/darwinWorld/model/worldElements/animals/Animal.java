@@ -31,6 +31,7 @@ public class Animal extends AbstractAnimal {
         pane.getChildren().add(circle);
         circle.radiusProperty().bind(Bindings.min(
                 pane.widthProperty(), pane.heightProperty()).divide(3));
+        pane.setStyle("-fx-background-color: transparent;");
         return pane;
     }
 
