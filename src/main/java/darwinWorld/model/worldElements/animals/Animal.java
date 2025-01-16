@@ -5,7 +5,6 @@ import darwinWorld.model.map.ILocationProvider;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 import javafx.beans.binding.Bindings;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -17,10 +16,11 @@ public class Animal extends AbstractAnimal {
     private int energy;
     private final AnimalStats stats = new AnimalStats(this);
     private final Collection<Animal> children = new HashSet<>();
+    private boolean isDead = false;
 
     @Override
     public String toString() {
-        return "A";
+        return "Animal " + position.toString();
     }
 
     public Pane getGraphicalRepresentation() {
@@ -83,7 +83,11 @@ public class Animal extends AbstractAnimal {
     }
 
     public void kill(int currentDay) {
+        if(isDead) {
+            return;
+        }
         stats.setDayOfDeath(currentDay);
+        isDead = true;
     }
 
     @Override

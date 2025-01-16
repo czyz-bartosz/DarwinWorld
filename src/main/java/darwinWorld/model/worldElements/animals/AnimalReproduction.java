@@ -56,8 +56,8 @@ public class AnimalReproduction {
         int splitPosition = (int) (((double) parent1.getEnergy() / sumOfEnergy) * genesLength);
 
         List<MoveRotation> genes = Stream.concat(
-                parent1.genes.stream().limit(splitPosition),
-                parent2.genes.stream().skip(splitPosition)
+                parent1.getGenes().stream().limit(splitPosition),
+                parent2.getGenes().stream().skip(splitPosition)
         ).collect(Collectors.toList());
 
         List<Integer> genesIndexesToMute =

@@ -11,7 +11,13 @@ public class WorldMapUtils {
     public static Collection<Vector2d> getPositionsOccupiedByAnimals(WorldMap map) {
         Map<Vector2d, HashSet<Animal>> animals = map.getAnimals();
 
-        return animals.keySet();
+        Collection<Vector2d> positions = new HashSet<>();
+
+        animals.forEach((position, animalSet) -> {
+            if(!animalSet.isEmpty()) positions.add(position);
+        });
+
+        return positions;
     }
 
     public static Collection<Vector2d> getPositionsOccupiedByGrass(WorldMap map) {

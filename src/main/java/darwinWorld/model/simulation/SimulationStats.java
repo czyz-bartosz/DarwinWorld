@@ -37,10 +37,6 @@ public class SimulationStats {
         addDeadAnimalLifeSpan(animal.getStats().getNumberOfDaysOfLife());
     }
 
-    public int getNumberOfDeadAnimals() {
-        return numberOfDeadAnimals;
-    }
-
     public void incrementNumberOfDeadAnimals() {
         numberOfDeadAnimals++;
     }

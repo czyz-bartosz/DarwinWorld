@@ -6,7 +6,7 @@ public class SimulationParametersBuilder {
     private int mapHeight = 10;
     private int mapWidth = 15;
     private int equatorSpan = 2;
-    private boolean withOwlBear = true;
+    private boolean withOwlBear = false;
     private int initialGrassAmount = 20;
     private int initialAnimalAmount = 6;
     private int initialAnimalEnergy = 10;
