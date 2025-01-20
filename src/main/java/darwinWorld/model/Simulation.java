@@ -3,31 +3,62 @@ package darwinWorld.model;
 import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.simulation.parameters.SimulationParameters;
 import darwinWorld.model.simulation.parameters.SimulationParametersBuilder;
+import darwinWorld.model.worldElements.animals.Animal;
 
 public class Simulation implements Runnable {
 
-    private SimulationParameters sp;
     private WorldMap map;
+    private Animal selectedAnimal;
+    private int currentDay = 0;
+    private boolean isRunning = false;
+    private final Object pauseLock = new Object();
 
-    public Simulation() {
-        SimulationParametersBuilder sb = new SimulationParametersBuilder();
-        sp = sb.build();
+
+
+    //Todo add stepDelay to parameters
+    private int stepDelay = 100;
+
+
+    public Simulation(SimulationParameters sp) {
         map = new WorldMap(sp);
     }
 
     public void run() {
-        for(int i = 0; i < 10; i++) {
+        while (true) {
+            while (!isRunning) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             System.out.println(map.toString());
             step();
+
+            if(currentDay == 100){ // Needs to be replaced with SimulationStats.getNumberOfAnimals()
+                isRunning = false;
+                return;
+            }
+
             try {
-                Thread.sleep(0);
+                Thread.sleep(stepDelay);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
+    public void pauseSimulation(){
+        isRunning = false;
+        notify();
+    }
+    public void startSimulation(){
+        isRunning = true;
+    }
+
     public void step(){
+        currentDay++;
         map.step();
     }
 
