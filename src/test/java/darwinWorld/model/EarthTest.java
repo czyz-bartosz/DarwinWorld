@@ -71,14 +71,14 @@ class EarthTest {
             "10, 15, 3, 4",
             "9, 15, 2, 3728197"
     })
-    void getRandomEquadorPosition_WithInitializedEarth_ReturnsValidPosition(int mapHeight, int mapWidth, int equadorSpan, long seed){
+    void getRandomEquatorPosition_WithInitializedEarth_ReturnsValidPosition(int mapHeight, int mapWidth, int equadorSpan, long seed){
         Earth earth = new Earth(mapHeight, mapWidth, equadorSpan);
         Boundary equadorStrip = earth.getEquatorStrip();
         RandomNumberGenerator.setSeed(seed);
 
         for(int i=0; i<10; i++){
 
-            Vector2d randomPositon = earth.randomEquadorPosition();
+            Vector2d randomPositon = earth.randomEquatorPosition();
 
 
             assertTrue(equadorStrip.contains(randomPositon));
