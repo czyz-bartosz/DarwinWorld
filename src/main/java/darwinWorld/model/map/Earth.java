@@ -11,15 +11,15 @@ public class Earth {
     private final Boundary equatorStrip;
     private final Boundary southernHemisphere;
 
-    public Earth(int mapHeight, int mapWidth, int equadorSpan){
+    public Earth(int mapHeight, int mapWidth, int equatorSpan){
 
         Vector2d lowerLeft = new Vector2d(0,0);
         Vector2d upperRight = new Vector2d(mapWidth, mapHeight);
         this.boundary = new Boundary(lowerLeft, upperRight);
 
         int heightCenter = mapHeight / 2;
-        int northernHemisphereEnd = heightCenter + equadorSpan + 1;
-        int southernHemisphereEnd = heightCenter - equadorSpan - 1;
+        int northernHemisphereEnd = heightCenter + equatorSpan + 1;
+        int southernHemisphereEnd = heightCenter - equatorSpan - 1;
 
         Vector2d southernHemisphereUpperRight = new Vector2d(mapWidth,southernHemisphereEnd);
         this.southernHemisphere = new Boundary(lowerLeft,southernHemisphereUpperRight);
@@ -39,7 +39,7 @@ public class Earth {
 
     public Vector2d randomNorthernHemispherePosition(){ return northernHemisphere.randomPosition(); }
     public Vector2d randomSouthernHemispherePosition(){ return southernHemisphere.randomPosition(); }
-    public Vector2d randomEquadorPosition(){ return equatorStrip.randomPosition(); }
+    public Vector2d randomEquatorPosition(){ return equatorStrip.randomPosition(); }
 
     public Vector2d randomPosition(){ return boundary.randomPosition(); }
     public Vector2d randomUnoccupiedPosition(WorldMap map) throws NoPositonException {

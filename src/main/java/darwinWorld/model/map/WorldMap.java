@@ -1,12 +1,13 @@
 package darwinWorld.model.map;
 
 import darwinWorld.enums.MoveRotation;
+import darwinWorld.model.simulation.Simulation;
 import darwinWorld.model.simulation.parameters.SimulationParameters;
 import darwinWorld.model.worldElements.Grass;
 import darwinWorld.model.worldElements.IWorldElement;
 import darwinWorld.model.worldElements.animals.Animal;
-import darwinWorld.model.worldElements.animals.OwlBear;
-import darwinWorld.model.worldElements.animals.OwlBearTerritory;
+import darwinWorld.model.worldElements.animals.owlBear.OwlBear;
+import darwinWorld.model.worldElements.animals.owlBear.OwlBearTerritory;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.CrazyGeneSelectionStrategy;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSelectionStrategy;
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.SequentialGeneSelectionStrategy;
@@ -21,15 +22,17 @@ public class WorldMap implements ILocationProvider {
     private final Map<Vector2d, Grass> grass = new HashMap<>();
     private OwlBear owlBear;
     private final IGeneSelectionStrategy geneSelectionStrategy;
+    private final Simulation simulation;
 
     private final Earth earth;
     private final MapActions mapActions;
 
     private final MapVisualizer visualizer = new MapVisualizer(this);
 
-    public WorldMap(SimulationParameters sp) {
-
-        mapActions = new MapActions(this, sp);
+    public WorldMap(Simulation simulation) {
+        this.simulation = simulation;
+        SimulationParameters sp = simulation.getParameters();
+        mapActions = new MapActions(this, simulation);
 
         if (sp.crazyMutation()) geneSelectionStrategy = new CrazyGeneSelectionStrategy();
         else geneSelectionStrategy = new SequentialGeneSelectionStrategy();
@@ -66,7 +69,7 @@ public class WorldMap implements ILocationProvider {
     public Map<Vector2d, HashSet<Animal>> getAnimals() { return animals; }
     public IGeneSelectionStrategy getGeneSelectionStrategy() { return geneSelectionStrategy; }
     public Map<Vector2d, Grass> getGrass() { return grass; }
-    public OwlBear getOwlBear() { return owlBear; }
+    public Optional<OwlBear> getOwlBear() { return Optional.ofNullable(owlBear); }
     public Earth getEarth() { return earth; }
 
     public void step(){
@@ -108,9 +111,9 @@ public class WorldMap implements ILocationProvider {
     public Collection<IWorldElement> objectsAt(Vector2d position){
         ArrayList<IWorldElement> objects = new ArrayList<>();
 
-        if(animals.get(position) != null) objects.addAll(animals.get(position));
-        if(grass.get(position) != null) objects.add(grass.get(position));
         if(owlBear != null && owlBear.getPosition().equals(position))objects.add(owlBear);
+        if(grass.get(position) != null) objects.add(grass.get(position));
+        if(animals.get(position) != null) objects.addAll(animals.get(position));
 
         if(objects.isEmpty()) return null;
         return objects;
@@ -138,13 +141,13 @@ public class WorldMap implements ILocationProvider {
         if(mapBoundary.contains(oldPosition)) return oldPosition;
 
         //Corners, position gets assigned to a corner
-        if(oldPosition.getX() + 1 == mapBoundary.upperRight().getX() && oldPosition.getY() + 1 == mapBoundary.upperRight().getY())
+        if(oldPosition.getX() - 1 == mapBoundary.upperRight().getX() && oldPosition.getY() - 1 == mapBoundary.upperRight().getY())
             return new Vector2d(oldPosition.getX() - 1, oldPosition.getY() - 1);
 
-        if(oldPosition.getX() + 1 == mapBoundary.upperRight().getX() && oldPosition.getY() ==  -1)
+        if(oldPosition.getX() - 1 == mapBoundary.upperRight().getX() && oldPosition.getY() ==  -1)
             return new Vector2d(oldPosition.getX() - 1, 0);
 
-        if(oldPosition.getX() == -1 && oldPosition.getY() + 1 == mapBoundary.upperRight().getY() + 1)
+        if(oldPosition.getX() == -1 && oldPosition.getY() - 1 == mapBoundary.upperRight().getY())
             return new Vector2d(0, oldPosition.getY() - 1);
 
         if(oldPosition.getX()  == -1 && oldPosition.getY() == -1)
@@ -157,9 +160,15 @@ public class WorldMap implements ILocationProvider {
         if(oldPosition.getX() == -1)
             return new Vector2d(mapBoundary.upperRight().getX(), oldPosition.getY());
 
-        //Top or bottom, position remains the same
-        return oldPosition;
+        if(oldPosition.getY() > mapBoundary.upperRight().getY()) {
+            return new Vector2d(oldPosition.getX(), mapBoundary.upperRight().getY());
+        }
 
+        if(oldPosition.getY() < mapBoundary.lowerLeft().getY()) {
+            return new Vector2d(oldPosition.getX(), mapBoundary.lowerLeft().getY());
+        }
+
+        return oldPosition;
     }
 
     public MoveRotation getRotation(Vector2d oldPosition, MoveRotation rotation) {

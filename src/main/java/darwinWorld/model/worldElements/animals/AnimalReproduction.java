@@ -25,16 +25,18 @@ public class AnimalReproduction {
         );
         int childEnergy = energyUsedToReproduce * 2;
 
-        parent1.afterReproduce(energyUsedToReproduce);
-        parent2.afterReproduce(energyUsedToReproduce);
-
-        return new Animal(
+        Animal child = new Animal(
                 parent1.getPosition(),
                 MoveRotation.randomMoveRotation(),
                 childGene,
                 0,
                 childEnergy
         );
+
+        parent1.afterReproduce(energyUsedToReproduce, child);
+        parent2.afterReproduce(energyUsedToReproduce, child);
+
+        return child;
     }
 
     private static List<MoveRotation> generateGenotype(
@@ -54,8 +56,8 @@ public class AnimalReproduction {
         int splitPosition = (int) (((double) parent1.getEnergy() / sumOfEnergy) * genesLength);
 
         List<MoveRotation> genes = Stream.concat(
-                parent1.genes.stream().limit(splitPosition),
-                parent2.genes.stream().skip(splitPosition)
+                parent1.getGenes().stream().limit(splitPosition),
+                parent2.getGenes().stream().skip(splitPosition)
         ).collect(Collectors.toList());
 
         List<Integer> genesIndexesToMute =
