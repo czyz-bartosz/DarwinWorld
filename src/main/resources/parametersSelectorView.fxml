@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" prefHeight="670.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="darwinWorld.controllers.ParametersSelectorController">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Darwin World">
+         <VBox.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <HBox alignment="CENTER" maxWidth="300.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Saved Configurations" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <ComboBox fx:id="savedConfigurationsSelector" prefWidth="150.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Height" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="mapHeight" fx:id="mapHeightSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Width" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="mapWidth" fx:id="mapWidthSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equator Span" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="equatorSpan" fx:id="equatorSpanSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Energy used to reproduce" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="energyUsedToReproduce" fx:id="energyUsedToReproduceSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Minimal energy to reproduce" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="minimalEnergyToReproduce" fx:id="minimalEnergyToReproduceSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text fx:id="minMutations" strokeType="OUTSIDE" strokeWidth="0.0" text="Min mutations" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="Min mutations" fx:id="minMutationsSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max mutations" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="maxMutations" fx:id="maxMutationsSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Genes length" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="genesLength" fx:id="genesLengthSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Grass energy" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="grassEnergy" fx:id="grassEnergySpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Grass growth per day" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="grassGrowthPerDay" fx:id="grassGrowthPerDaySpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="3.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Initial grass amount" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="initialGrassAmount" fx:id="initialGrassAmountSpinner" maxWidth="80.0" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="3.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Initial animal amount" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="initialAnimalAmount" fx:id="initialAnimalAmountSpinner" maxWidth="80.0" />
+         </children>
+         <padding>
+            <Insets bottom="3.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Initial animal energy" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Spinner id="initialAnimalEnergy" fx:id="initialAnimalEnergySpinner" maxWidth="80.0" />
+         </children>
+         <padding>
+            <Insets bottom="3.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Owlbear" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="80.0" HBox.hgrow="NEVER">
+               <children>
+                  <CheckBox id="withOwlBear" fx:id="withOwlBearCheckBox" mnemonicParsing="false" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="3.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Crazy mutations" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="80.0">
+               <children>
+                  <CheckBox id="crazyMutations" fx:id="crazyMutationsCheckBox" mnemonicParsing="false" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="3.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Save to CSV" />
+            <Region minHeight="0.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="80.0">
+               <children>
+                  <CheckBox id="saveToCSV" fx:id="saveToCSVCheckBox" mnemonicParsing="false" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="3.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" maxWidth="250.0" prefHeight="35.0">
+         <children>
+            <TextField fx:id="saveConfigurationName" maxWidth="80.0" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveConfiguration" text="Save" />
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <Button fx:id="startButton1" mnemonicParsing="false" onAction="#startSimulation" prefHeight="35.0" prefWidth="120.0" text="Start">
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+</VBox>

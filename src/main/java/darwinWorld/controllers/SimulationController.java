@@ -91,6 +91,7 @@ public class SimulationController {
     public void initialize() {
         simulation = new Simulation(this);
         new Thread(simulation).start();
+//        simulation.run();
         animalChoiceBox.setItems(items);
     }
 
