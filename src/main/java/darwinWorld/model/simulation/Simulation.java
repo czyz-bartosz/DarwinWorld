@@ -39,8 +39,9 @@ public class Simulation implements Runnable {
         return stats;
     }
 
-    public Simulation(SimulationController simulationController) {
-        this();
+    public Simulation(SimulationController simulationController, SimulationParameters sp) {
+        this.sp = sp;
+        map = new WorldMap(this);
         controller = simulationController;
     }
 

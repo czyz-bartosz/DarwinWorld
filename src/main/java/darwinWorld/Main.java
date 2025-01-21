@@ -1,8 +1,9 @@
 package darwinWorld;
 
-import darwinWorld.model.simulation.Simulation;
-import darwinWorld.model.simulation.SimulationEngine;
+import darwinWorld.model.simulation.parameters.SimulationParameters;
 import javafx.application.Application;
+
+import java.lang.reflect.RecordComponent;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,5 +14,9 @@ public class Main {
 //        SimulationEngine simulationEngine = new SimulationEngine();
 
         Application.launch(DarwinWorldApp.class, args);
+//        SavedSimulationManager sm = new SavedSimulationManager();
+
+//        sm.save(List.of());
     }
+
 }
