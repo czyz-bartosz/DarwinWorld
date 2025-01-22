@@ -1,18 +1,21 @@
 package darwinWorld.controllers;
 
-import darwinWorld.model.map.WorldMapUtils;
+import darwinWorld.enums.MoveRotation;
+import darwinWorld.model.map.Vector2d;
+import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.simulation.Simulation;
+import darwinWorld.model.simulation.SimulationStats;
 import darwinWorld.model.worldElements.animals.Animal;
 import darwinWorld.views.utils.MapGridPaneUtils;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+
+import java.util.List;
 
 
 public class SimulationController {
@@ -35,8 +38,6 @@ public class SimulationController {
     @FXML
     public Button stopBtn;
     @FXML
-    public ChoiceBox<Animal> animalChoiceBox;
-    @FXML
     public Text genotypeField;
     @FXML
     public Text currentIndexOfGenotypeField;
@@ -52,67 +53,180 @@ public class SimulationController {
     public Text daysOfLifeField;
     @FXML
     public Text dayOfDeathField;
-    ObservableList<Animal> items = FXCollections.observableArrayList();
-    Simulation simulation;
-    Animal selectedAnimal = null;
+    @FXML
+    public ScrollPane gridScrollPane;
+    @FXML
+    public Button showDominantBtn;
+    @FXML
+    public Button showPreferredCellsBtn;
+    private Simulation simulation;
+    private Animal selectedAnimal = null;
+    private Vector2d center = new Vector2d(0, 0);
+    private List<MoveRotation> theMostPopularGenotype;
+    private double lastMouseX;
+    private double lastMouseY;
+    private boolean showDominantBtnPressed = false;
+    private boolean showPreferredCellsBtnPressed = false;
+
+    public boolean getShowDominantBtnPressed() {
+        return showDominantBtnPressed;
+    }
+
+    public boolean getShowPreferredCellsBtnPressed() {
+        return showPreferredCellsBtnPressed;
+    }
+
+    public List<MoveRotation> getTheMostPopularGenotype() {
+        return theMostPopularGenotype;
+    }
+
+    public void addMouseControl(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal) {
+        mapGridPane.setOnMousePressed(event -> {
+            lastMouseX = event.getSceneX();
+            lastMouseY = event.getSceneY();
+        });
+
+        mapGridPane.setOnMouseDragged(event -> {
+            double deltaX = event.getSceneX() - lastMouseX;
+            double deltaY = event.getSceneY() - lastMouseY;
+
+            int deltaCellsX = (int) (deltaX/4);
+            int deltaCellsY = (int) (deltaY/4);
+
+            center = new Vector2d(center.getX() - deltaCellsX, center.getY() + deltaCellsY);
+
+            lastMouseX = event.getSceneX();
+            lastMouseY = event.getSceneY();
+
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    worldMap,
+                    selectedAnimal,
+                    center,
+                    this
+            );
+        });
+    }
 
     private void updateSimulationStatsView() {
-        numberOfAnimalsField.textProperty().setValue(Integer.toString(simulation.getStats().getNumberOfAnimals()));
-        numberOfGrassField.textProperty().setValue(Integer.toString(simulation.getStats().getNumberOfGrass()));
-        numberOfFreeCellsField.textProperty().setValue(Integer.toString(simulation.getStats().getNumberOfFreeCells()));
-        theMostPopularGenotypeField.textProperty().setValue(simulation.getStats().getTheMostPopularGenotype().toString());
-        avgEnergyField.textProperty().setValue(Double.toString(simulation.getStats().getAvgEnergy()));
-        avgLifeSpanField.textProperty().setValue(Double.toString(simulation.getStats().getAvgLifeSpan()));
-        avgNumberOfChildrenField.textProperty().setValue(Double.toString(simulation.getStats().getAvgNumberOfChildrenPerAnimal()));
+        SimulationStats stats = simulation.getStats();
+        String numberOfAnimals = Integer.toString(stats.getNumberOfAnimals());
+        String numberOfGrass = Integer.toString(stats.getNumberOfGrass());
+        String numberOfFreeCells = Integer.toString(stats.getNumberOfFreeCells());
+        String theMostPopularGenotype = stats.getTheMostPopularGenotype().toString();
+        String avgEnergy = Double.toString(stats.getAvgEnergy());
+        String avgLifeSpan = Double.toString(stats.getAvgLifeSpan());
+        String avgNumberOfChildren = Double.toString(stats.getAvgNumberOfChildrenPerAnimal());
+
+        Platform.runLater(() -> {
+            numberOfAnimalsField.textProperty().setValue(numberOfAnimals);
+            numberOfGrassField.textProperty().setValue(numberOfGrass);
+            numberOfFreeCellsField.textProperty().setValue(numberOfFreeCells);
+            theMostPopularGenotypeField.textProperty().setValue(theMostPopularGenotype);
+            avgEnergyField.textProperty().setValue(avgEnergy);
+            avgLifeSpanField.textProperty().setValue(avgLifeSpan);
+            avgNumberOfChildrenField.textProperty().setValue(avgNumberOfChildren);
+        });
     }
 
     private void updateAnimalStatsView() {
-        if(selectedAnimal != null) {
-            genotypeField.textProperty().setValue(selectedAnimal.getGenes().toString());
-            currentIndexOfGenotypeField.textProperty().setValue(Integer.toString(selectedAnimal.getGeneCurrentIndex()));
-            energyField.textProperty().setValue(Double.toString(selectedAnimal.getEnergy()));
-            eatenGrassField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfEatenGrass()));
-            numberOfChildrenField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfChildren()));
-            numberOfDescendantsField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfDescendants()));
-            daysOfLifeField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfDaysOfLife()));
-            dayOfDeathField.textProperty().setValue(selectedAnimal.getStats().getDayOfDeath().toString());
+        if (selectedAnimal != null) {
+            String genotype = selectedAnimal.getGenes().toString();
+            String currentIndexOfGenotype = Integer.toString(selectedAnimal.getGeneCurrentIndex());
+            String energy = Double.toString(selectedAnimal.getEnergy());
+            String eatenGrass = Integer.toString(selectedAnimal.getStats().getNumberOfEatenGrass());
+            String numberOfChildren = Integer.toString(selectedAnimal.getStats().getNumberOfChildren());
+            String numberOfDescendants = Integer.toString(selectedAnimal.getStats().getNumberOfDescendants());
+            String daysOfLife = Integer.toString(selectedAnimal.getStats().getNumberOfDaysOfLife());
+            String dayOfDeath = selectedAnimal.getStats().getDayOfDeath().toString();
+
+            Platform.runLater(() -> {
+                genotypeField.textProperty().setValue(genotype);
+                currentIndexOfGenotypeField.textProperty().setValue(currentIndexOfGenotype);
+                energyField.textProperty().setValue(energy);
+                eatenGrassField.textProperty().setValue(eatenGrass);
+                numberOfChildrenField.textProperty().setValue(numberOfChildren);
+                numberOfDescendantsField.textProperty().setValue(numberOfDescendants);
+                daysOfLifeField.textProperty().setValue(daysOfLife);
+                dayOfDeathField.textProperty().setValue(dayOfDeath);
+            });
         }
     }
+
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
+
+        addMouseControl(mapGridPane, simulation.getMap(), selectedAnimal);
     }
     public void update() {
         updateSimulationStatsView();
         updateAnimalStatsView();
         Platform.runLater(() -> {
-            MapGridPaneUtils.generateGrid(mapGridPane, simulation.getMap(), selectedAnimal);
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    simulation.getMap(),
+                    selectedAnimal,
+                    center,
+                    this
+            );
         });
     }
 
-    @FXML
-    public void initialize() {
-//        simulation = new Simulation(this);
-//        new Thread(simulation).start();
-//        simulation.run();
-        animalChoiceBox.setItems(items);
-    }
-
     public void onClickShowPreferredCellsBtn(ActionEvent actionEvent) {
+        showPreferredCellsBtnPressed = !showPreferredCellsBtnPressed;
+        Platform.runLater(()->{
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    simulation.getMap(),
+                    selectedAnimal,
+                    center,
+                    this
+            );
+        });
     }
 
     public void onClickShowDominantBtn(ActionEvent actionEvent) {
+        showDominantBtnPressed = !showDominantBtnPressed;
+        simulation.getStats().getTheMostPopularGenotype().ifPresent(genotype -> {
+            theMostPopularGenotype = genotype;
+            Platform.runLater(()->{
+                MapGridPaneUtils.generateGrid(
+                        mapGridPane,
+                        simulation.getMap(),
+                        selectedAnimal,
+                        center,
+                        this
+                );
+            });
+        });
     }
 
     private void onSimulationStop() {
         stopBtn.setText("Start");
-        animalChoiceBox.setDisable(false);
-        items.clear();
-        items.addAll(WorldMapUtils.getCollectionOfAnimals(simulation.getMap()));
+        showDominantBtn.setDisable(false);
+        showPreferredCellsBtn.setDisable(false);
     }
 
     private void onSimulationStart() {
         stopBtn.setText("Stop");
-        animalChoiceBox.setDisable(true);
+        showDominantBtn.setDisable(true);
+        showPreferredCellsBtn.setDisable(true);
+        showDominantBtnPressed = false;
+        showPreferredCellsBtnPressed = false;
+    }
+
+    public void setSelectedAnimal(Animal selectedAnimal) {
+        this.selectedAnimal = selectedAnimal;
+        updateAnimalStatsView();
+        Platform.runLater(() -> {
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    simulation.getMap(),
+                    selectedAnimal,
+                    center,
+                    this
+            );
+        });
     }
 
     public void onClickStopBtn(ActionEvent actionEvent) {
@@ -124,9 +238,4 @@ public class SimulationController {
         }
     }
 
-    public void onChoiceAnimalChoiceBox(ActionEvent actionEvent) {
-        selectedAnimal = animalChoiceBox.getSelectionModel().getSelectedItem();
-        updateAnimalStatsView();
-        MapGridPaneUtils.generateGrid(mapGridPane, simulation.getMap(), selectedAnimal);
-    }
 }
