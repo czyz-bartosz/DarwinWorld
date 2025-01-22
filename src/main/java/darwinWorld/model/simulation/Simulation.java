@@ -56,7 +56,7 @@ public class Simulation implements Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 if (isRunning) {
-                System.out.println(map.toString());
+//                System.out.println(map.toString());
                     if (controller != null) {
                         controller.update();
                     }
