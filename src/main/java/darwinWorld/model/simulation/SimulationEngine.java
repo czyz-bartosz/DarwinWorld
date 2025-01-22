@@ -9,16 +9,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 
 
 public class SimulationEngine {
-    List<Simulation> simulations = new ArrayList<>();
+    HashMap<Simulation, Future<?>> futures = new HashMap<>();
     private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
     private void configureStage(Stage primaryStage, VBox viewRoot, String title) {
@@ -40,6 +40,11 @@ public class SimulationEngine {
         stage.sizeToScene();
         stage.show();
 
+        stage.setOnCloseRequest(event -> {
+            endSimulation(simulation);
+            stage.close();
+        });
+
         return simulation;
     }
 
@@ -47,12 +52,19 @@ public class SimulationEngine {
 
         try {
             Simulation simulation = newSimulation(sp);
-            simulations.add(simulation);
-            executorService.submit(simulation);
+            Future<?> future = executorService.submit(simulation);
+            futures.put(simulation, future);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void endSimulation(Simulation simulation) {
+        if(futures.containsKey(simulation)) {
+            futures.get(simulation).cancel(true);
+            futures.remove(simulation);
+        }
     }
 
     public void endSimulations() throws InterruptedException {

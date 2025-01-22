@@ -15,9 +15,8 @@ public class Simulation implements Runnable {
     private SimulationController controller;
     private volatile boolean isRunning = true;
 
-    public Simulation() {
-        SimulationParametersBuilder sb = new SimulationParametersBuilder();
-        sp = sb.build();
+    public Simulation(SimulationParameters sp) {
+        this.sp = sp;
         map = new WorldMap(this);
     }
 
@@ -54,19 +53,22 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        while (true){
-            if(isRunning){
-//                System.out.println(map.toString());
-                if(controller != null) {
-                    controller.update();
-                }
-                step();
-                try {
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                if (isRunning) {
+                System.out.println(map.toString());
+                    if (controller != null) {
+                        controller.update();
+                    }
+                    if (sp.saveToCSV()) {
+                        stats.saveToCSV();
+                    }
+                    step();
                     Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
             }
+        }catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
