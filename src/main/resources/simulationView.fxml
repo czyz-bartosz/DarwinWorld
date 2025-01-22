@@ -19,7 +19,6 @@
             <Button fx:id="stopBtn" mnemonicParsing="false" onAction="#onClickStopBtn" text="STOP" />
             <Button mnemonicParsing="false" onAction="#onClickShowDominantBtn" text="SHOW DOMINANT" />
             <Button mnemonicParsing="false" onAction="#onClickShowPreferredCellsBtn" text="SHOW PREFERRED CELLS" />
-            <ChoiceBox disable="true" onAction="#onChoiceAnimalChoiceBox" fx:id="animalChoiceBox" prefWidth="150.0" />
          </items>
       </ToolBar>
       <SplitPane dividerPositions="0.2" VBox.vgrow="ALWAYS">

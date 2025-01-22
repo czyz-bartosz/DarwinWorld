@@ -1,5 +1,6 @@
 package darwinWorld.views.utils;
 
+import darwinWorld.controllers.SimulationController;
 import darwinWorld.model.map.Boundary;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.map.WorldMap;
@@ -9,11 +10,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class MapGridPaneUtils {
     public static final int DEFAULT_WIDTH = 75;
@@ -25,7 +21,7 @@ public class MapGridPaneUtils {
         mapGridPane.getRowConstraints().clear();
     }
 
-    public static void generateGrid(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal, Vector2d center) {
+    public static void generateGrid(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal, Vector2d center, SimulationController simulationController) {
         clearGrid(mapGridPane);
 
         int halfWidth = DEFAULT_WIDTH / 2;
@@ -48,10 +44,10 @@ public class MapGridPaneUtils {
             mapGridPane.getRowConstraints().add(row);
         }
 
-        updateVisibleGrid(mapGridPane, worldMap, selectedAnimal, visibleBounds);
+        updateVisibleGrid(mapGridPane, worldMap, selectedAnimal, visibleBounds, simulationController);
     }
 
-    public static void updateVisibleGrid(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal, Boundary visibleBounds) {
+    public static void updateVisibleGrid(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal, Boundary visibleBounds, SimulationController simulationController) {
         int shiftX = visibleBounds.lowerLeft().getX();
         int shiftY = visibleBounds.lowerLeft().getY();
         int height = visibleBounds.upperRight().getY() - visibleBounds.lowerLeft().getY();
@@ -68,6 +64,16 @@ public class MapGridPaneUtils {
                     if (worldMap.objectsAt(position) != null) {
                         IWorldElement worldElement = worldMap.objectsAt(position).iterator().next();
                         cellPane = worldElement.getGraphicalRepresentation();
+                        if(selectedAnimal != null) {
+                            if(selectedAnimal.getPosition().equals(position)) {
+                                cellPane.setStyle("-fx-border-color: red;");
+                            }
+                        }
+                        if(worldElement instanceof Animal) {
+                            cellPane.setOnMouseClicked((mouseEvent) -> {
+                                simulationController.setSelectedAnimal((Animal)worldElement);
+                            });
+                        }
                     }
                 } else {
                     // Empty grid remains white
