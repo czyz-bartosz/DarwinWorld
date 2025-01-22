@@ -21,7 +21,13 @@ public class MapGridPaneUtils {
         mapGridPane.getRowConstraints().clear();
     }
 
-    public static void generateGrid(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal, Vector2d center, SimulationController simulationController) {
+    public static void generateGrid(
+            GridPane mapGridPane,
+            WorldMap worldMap,
+            Animal selectedAnimal,
+            Vector2d center,
+            SimulationController simulationController
+    ) {
         clearGrid(mapGridPane);
 
         int halfWidth = DEFAULT_WIDTH / 2;
@@ -44,10 +50,22 @@ public class MapGridPaneUtils {
             mapGridPane.getRowConstraints().add(row);
         }
 
-        updateVisibleGrid(mapGridPane, worldMap, selectedAnimal, visibleBounds, simulationController);
+        updateVisibleGrid(
+                mapGridPane,
+                worldMap,
+                selectedAnimal,
+                visibleBounds,
+                simulationController
+        );
     }
 
-    public static void updateVisibleGrid(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal, Boundary visibleBounds, SimulationController simulationController) {
+    public static void updateVisibleGrid(
+            GridPane mapGridPane,
+            WorldMap worldMap,
+            Animal selectedAnimal,
+            Boundary visibleBounds,
+            SimulationController simulationController
+    ) {
         int shiftX = visibleBounds.lowerLeft().getX();
         int shiftY = visibleBounds.lowerLeft().getY();
         int height = visibleBounds.upperRight().getY() - visibleBounds.lowerLeft().getY();
@@ -73,7 +91,15 @@ public class MapGridPaneUtils {
                             cellPane.setOnMouseClicked((mouseEvent) -> {
                                 simulationController.setSelectedAnimal((Animal)worldElement);
                             });
+                            if (simulationController.getShowDominantBtnPressed()) {
+                                if(((Animal) worldElement).getGenes().equals(simulationController.getTheMostPopularGenotype())) {
+                                    cellPane.setStyle("-fx-border-color: blue;");
+                                }
+                            }
                         }
+                    }
+                    if(simulationController.getShowPreferredCellsBtnPressed() && worldMap.getEarth().getEquatorStrip().contains(position)) {
+                        cellPane.setStyle("-fx-border-color: blue;");
                     }
                 } else {
                     // Empty grid remains white

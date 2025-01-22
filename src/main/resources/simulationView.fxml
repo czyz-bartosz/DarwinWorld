@@ -17,8 +17,8 @@
       <ToolBar prefHeight="40.0" VBox.vgrow="NEVER">
          <items>
             <Button fx:id="stopBtn" mnemonicParsing="false" onAction="#onClickStopBtn" text="STOP" />
-            <Button mnemonicParsing="false" onAction="#onClickShowDominantBtn" text="SHOW DOMINANT" />
-            <Button mnemonicParsing="false" onAction="#onClickShowPreferredCellsBtn" text="SHOW PREFERRED CELLS" />
+            <Button fx:id="showDominantBtn" disable="true" mnemonicParsing="false" onAction="#onClickShowDominantBtn" text="SHOW DOMINANT" />
+            <Button fx:id="showPreferredCellsBtn" disable="true" mnemonicParsing="false" onAction="#onClickShowPreferredCellsBtn" text="SHOW PREFERRED CELLS" />
          </items>
       </ToolBar>
       <SplitPane dividerPositions="0.2" VBox.vgrow="ALWAYS">

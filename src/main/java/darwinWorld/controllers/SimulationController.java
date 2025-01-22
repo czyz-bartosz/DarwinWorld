@@ -1,5 +1,6 @@
 package darwinWorld.controllers;
 
+import darwinWorld.enums.MoveRotation;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.simulation.Simulation;
@@ -13,6 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+
+import java.util.List;
 
 
 public class SimulationController {
@@ -52,12 +55,30 @@ public class SimulationController {
     public Text dayOfDeathField;
     @FXML
     public ScrollPane gridScrollPane;
-    Simulation simulation;
-    Animal selectedAnimal = null;
-    Vector2d center = new Vector2d(0, 0);
-
+    @FXML
+    public Button showDominantBtn;
+    @FXML
+    public Button showPreferredCellsBtn;
+    private Simulation simulation;
+    private Animal selectedAnimal = null;
+    private Vector2d center = new Vector2d(0, 0);
+    private List<MoveRotation> theMostPopularGenotype;
     private double lastMouseX;
     private double lastMouseY;
+    private boolean showDominantBtnPressed = false;
+    private boolean showPreferredCellsBtnPressed = false;
+
+    public boolean getShowDominantBtnPressed() {
+        return showDominantBtnPressed;
+    }
+
+    public boolean getShowPreferredCellsBtnPressed() {
+        return showPreferredCellsBtnPressed;
+    }
+
+    public List<MoveRotation> getTheMostPopularGenotype() {
+        return theMostPopularGenotype;
+    }
 
     public void addMouseControl(GridPane mapGridPane, WorldMap worldMap, Animal selectedAnimal) {
         mapGridPane.setOnMousePressed(event -> {
@@ -77,7 +98,13 @@ public class SimulationController {
             lastMouseX = event.getSceneX();
             lastMouseY = event.getSceneY();
 
-            MapGridPaneUtils.generateGrid(mapGridPane, worldMap, selectedAnimal, center, this);
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    worldMap,
+                    selectedAnimal,
+                    center,
+                    this
+            );
         });
     }
 
@@ -135,29 +162,70 @@ public class SimulationController {
         updateSimulationStatsView();
         updateAnimalStatsView();
         Platform.runLater(() -> {
-            MapGridPaneUtils.generateGrid(mapGridPane, simulation.getMap(), selectedAnimal, center, this);
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    simulation.getMap(),
+                    selectedAnimal,
+                    center,
+                    this
+            );
         });
     }
 
     public void onClickShowPreferredCellsBtn(ActionEvent actionEvent) {
+        showPreferredCellsBtnPressed = !showPreferredCellsBtnPressed;
+        Platform.runLater(()->{
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    simulation.getMap(),
+                    selectedAnimal,
+                    center,
+                    this
+            );
+        });
     }
 
     public void onClickShowDominantBtn(ActionEvent actionEvent) {
+        showDominantBtnPressed = !showDominantBtnPressed;
+        simulation.getStats().getTheMostPopularGenotype().ifPresent(genotype -> {
+            theMostPopularGenotype = genotype;
+            Platform.runLater(()->{
+                MapGridPaneUtils.generateGrid(
+                        mapGridPane,
+                        simulation.getMap(),
+                        selectedAnimal,
+                        center,
+                        this
+                );
+            });
+        });
     }
 
     private void onSimulationStop() {
         stopBtn.setText("Start");
+        showDominantBtn.setDisable(false);
+        showPreferredCellsBtn.setDisable(false);
     }
 
     private void onSimulationStart() {
         stopBtn.setText("Stop");
+        showDominantBtn.setDisable(true);
+        showPreferredCellsBtn.setDisable(true);
+        showDominantBtnPressed = false;
+        showPreferredCellsBtnPressed = false;
     }
 
     public void setSelectedAnimal(Animal selectedAnimal) {
         this.selectedAnimal = selectedAnimal;
         updateAnimalStatsView();
-        Platform.runLater(()->{
-            MapGridPaneUtils.generateGrid(mapGridPane, simulation.getMap(), selectedAnimal, center, this);
+        Platform.runLater(() -> {
+            MapGridPaneUtils.generateGrid(
+                    mapGridPane,
+                    simulation.getMap(),
+                    selectedAnimal,
+                    center,
+                    this
+            );
         });
     }
 
