@@ -78,7 +78,9 @@ public class SimulationController {
             dayOfDeathField.textProperty().setValue(selectedAnimal.getStats().getDayOfDeath().toString());
         }
     }
-
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
     public void update() {
         updateSimulationStatsView();
         updateAnimalStatsView();
@@ -89,8 +91,9 @@ public class SimulationController {
 
     @FXML
     public void initialize() {
-        simulation = new Simulation(this);
-        new Thread(simulation).start();
+//        simulation = new Simulation(this);
+//        new Thread(simulation).start();
+//        simulation.run();
         animalChoiceBox.setItems(items);
     }
 
