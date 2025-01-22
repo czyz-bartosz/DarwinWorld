@@ -14,10 +14,15 @@ public class Simulation implements Runnable {
     private final SimulationStats stats = new SimulationStats(this);
     private SimulationController controller;
     private volatile boolean isRunning = true;
+    private int day = 0;
 
     public Simulation(SimulationParameters sp) {
         this.sp = sp;
         map = new WorldMap(this);
+    }
+
+    public int getDay() {
+        return day;
     }
 
     public boolean getIsRunning() {
@@ -74,6 +79,7 @@ public class Simulation implements Runnable {
 
     public void step(){
         map.step();
+        ++day;
     }
 
 }

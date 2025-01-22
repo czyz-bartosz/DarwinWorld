@@ -73,10 +73,6 @@ public class Animal extends AbstractAnimal {
         return energy;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
     public void afterReproduce(int energyUsedToReproduce, Animal child) {
         this.energy -= energyUsedToReproduce;
         children.add(child);

@@ -52,8 +52,7 @@ public class MapActions {
                 if(map.getAnimals().get(owlBear.getPosition()) != null) {
                     for(Animal animal : map.getAnimals().get(owlBear.getPosition())) {
                         simulation.getStats().onAnimalDeath(animal);
-                        animal.setEnergy(-1); //placeholder for being eaten by an owl bear
-//                animal.kill(currentDay)
+                        animal.kill(simulation.getDay());
                     }
                     map.getAnimals().remove(owlBear.getPosition());
                 }
@@ -138,7 +137,7 @@ public class MapActions {
 
         for(Animal animal : allAnimals) {
             if(animal.getEnergy() > 0) continue;
-//            animal.kill(currentDay)
+            animal.kill(simulation.getDay());
             simulation.getStats().onAnimalDeath(animal);
             map.getAnimals().get(animal.getPosition()).remove(animal);
             if(map.getAnimals().get(animal.getPosition()).isEmpty()) map.getAnimals().remove(animal.getPosition());

@@ -3,6 +3,7 @@ package darwinWorld.controllers;
 import darwinWorld.model.map.Vector2d;
 import darwinWorld.model.map.WorldMap;
 import darwinWorld.model.simulation.Simulation;
+import darwinWorld.model.simulation.SimulationStats;
 import darwinWorld.model.worldElements.animals.Animal;
 import darwinWorld.views.utils.MapGridPaneUtils;
 import javafx.application.Platform;
@@ -81,27 +82,50 @@ public class SimulationController {
     }
 
     private void updateSimulationStatsView() {
-        numberOfAnimalsField.textProperty().setValue(Integer.toString(simulation.getStats().getNumberOfAnimals()));
-        numberOfGrassField.textProperty().setValue(Integer.toString(simulation.getStats().getNumberOfGrass()));
-        numberOfFreeCellsField.textProperty().setValue(Integer.toString(simulation.getStats().getNumberOfFreeCells()));
-        theMostPopularGenotypeField.textProperty().setValue(simulation.getStats().getTheMostPopularGenotype().toString());
-        avgEnergyField.textProperty().setValue(Double.toString(simulation.getStats().getAvgEnergy()));
-        avgLifeSpanField.textProperty().setValue(Double.toString(simulation.getStats().getAvgLifeSpan()));
-        avgNumberOfChildrenField.textProperty().setValue(Double.toString(simulation.getStats().getAvgNumberOfChildrenPerAnimal()));
+        SimulationStats stats = simulation.getStats();
+        String numberOfAnimals = Integer.toString(stats.getNumberOfAnimals());
+        String numberOfGrass = Integer.toString(stats.getNumberOfGrass());
+        String numberOfFreeCells = Integer.toString(stats.getNumberOfFreeCells());
+        String theMostPopularGenotype = stats.getTheMostPopularGenotype().toString();
+        String avgEnergy = Double.toString(stats.getAvgEnergy());
+        String avgLifeSpan = Double.toString(stats.getAvgLifeSpan());
+        String avgNumberOfChildren = Double.toString(stats.getAvgNumberOfChildrenPerAnimal());
+
+        Platform.runLater(() -> {
+            numberOfAnimalsField.textProperty().setValue(numberOfAnimals);
+            numberOfGrassField.textProperty().setValue(numberOfGrass);
+            numberOfFreeCellsField.textProperty().setValue(numberOfFreeCells);
+            theMostPopularGenotypeField.textProperty().setValue(theMostPopularGenotype);
+            avgEnergyField.textProperty().setValue(avgEnergy);
+            avgLifeSpanField.textProperty().setValue(avgLifeSpan);
+            avgNumberOfChildrenField.textProperty().setValue(avgNumberOfChildren);
+        });
     }
 
     private void updateAnimalStatsView() {
-        if(selectedAnimal != null) {
-            genotypeField.textProperty().setValue(selectedAnimal.getGenes().toString());
-            currentIndexOfGenotypeField.textProperty().setValue(Integer.toString(selectedAnimal.getGeneCurrentIndex()));
-            energyField.textProperty().setValue(Double.toString(selectedAnimal.getEnergy()));
-            eatenGrassField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfEatenGrass()));
-            numberOfChildrenField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfChildren()));
-            numberOfDescendantsField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfDescendants()));
-            daysOfLifeField.textProperty().setValue(Integer.toString(selectedAnimal.getStats().getNumberOfDaysOfLife()));
-            dayOfDeathField.textProperty().setValue(selectedAnimal.getStats().getDayOfDeath().toString());
+        if (selectedAnimal != null) {
+            String genotype = selectedAnimal.getGenes().toString();
+            String currentIndexOfGenotype = Integer.toString(selectedAnimal.getGeneCurrentIndex());
+            String energy = Double.toString(selectedAnimal.getEnergy());
+            String eatenGrass = Integer.toString(selectedAnimal.getStats().getNumberOfEatenGrass());
+            String numberOfChildren = Integer.toString(selectedAnimal.getStats().getNumberOfChildren());
+            String numberOfDescendants = Integer.toString(selectedAnimal.getStats().getNumberOfDescendants());
+            String daysOfLife = Integer.toString(selectedAnimal.getStats().getNumberOfDaysOfLife());
+            String dayOfDeath = selectedAnimal.getStats().getDayOfDeath().toString();
+
+            Platform.runLater(() -> {
+                genotypeField.textProperty().setValue(genotype);
+                currentIndexOfGenotypeField.textProperty().setValue(currentIndexOfGenotype);
+                energyField.textProperty().setValue(energy);
+                eatenGrassField.textProperty().setValue(eatenGrass);
+                numberOfChildrenField.textProperty().setValue(numberOfChildren);
+                numberOfDescendantsField.textProperty().setValue(numberOfDescendants);
+                daysOfLifeField.textProperty().setValue(daysOfLife);
+                dayOfDeathField.textProperty().setValue(dayOfDeath);
+            });
         }
     }
+
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
 
@@ -131,8 +155,10 @@ public class SimulationController {
 
     public void setSelectedAnimal(Animal selectedAnimal) {
         this.selectedAnimal = selectedAnimal;
-        MapGridPaneUtils.generateGrid(mapGridPane, simulation.getMap(), selectedAnimal, center, this);
         updateAnimalStatsView();
+        Platform.runLater(()->{
+            MapGridPaneUtils.generateGrid(mapGridPane, simulation.getMap(), selectedAnimal, center, this);
+        });
     }
 
     public void onClickStopBtn(ActionEvent actionEvent) {
