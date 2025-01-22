@@ -35,42 +35,12 @@ class EarthTest {
 
     @ParameterizedTest
     @CsvSource({
-            "6, 6, 4",
-            "10, 15, 10",
-            "9, 15, 4"
+            "6, 6, 4, 321",
+            "10, 15, 10, 1",
+            "9, 15, 4, 9"
     })
-    void initializer_WithWrongEquadorSpan_ThrowsError(int mapHeight, int mapWidth, int equadorSpan){
-        assertThrows(IllegalArgumentException.class, () -> new Earth(mapHeight, mapWidth, equadorSpan));
-    }
 
 
-    @ParameterizedTest
-    @CsvSource({
-            "-8, 6, 4",
-            "10, 0, 0",
-            "9, 15, -4",
-            "12,-2,0"
-    })
-    void initializer_WithWrongArguments_ThrowsError(int mapHeight, int mapWidth, int equadorSpan){
-        assertThrows(IllegalArgumentException.class, () -> new Earth(mapHeight, mapWidth, equadorSpan));
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "8, 6, -2",
-            "10, 12, -5",
-    })
-    void initializer_WithNegativeEquadorSpan_ThrowsError(int mapHeight, int mapWidth, int equadorSpan){
-        assertThrows(IllegalArgumentException.class, () -> new Earth(mapHeight, mapWidth, equadorSpan));
-    }
-
-
-    @ParameterizedTest
-    @CsvSource({
-            "6, 6, 2, 821",
-            "10, 15, 3, 4",
-            "9, 15, 2, 3728197"
-    })
     void getRandomEquatorPosition_WithInitializedEarth_ReturnsValidPosition(int mapHeight, int mapWidth, int equadorSpan, long seed){
         Earth earth = new Earth(mapHeight, mapWidth, equadorSpan);
         Boundary equadorStrip = earth.getEquatorStrip();

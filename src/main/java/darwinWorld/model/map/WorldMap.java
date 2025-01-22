@@ -32,7 +32,7 @@ public class WorldMap implements ILocationProvider {
     public WorldMap(Simulation simulation) {
         this.simulation = simulation;
         SimulationParameters sp = simulation.getParameters();
-        mapActions = new MapActions(this, simulation);
+        this.mapActions = new MapActions(this, simulation);
 
         if (sp.crazyMutation()) geneSelectionStrategy = new CrazyGeneSelectionStrategy();
         else geneSelectionStrategy = new SequentialGeneSelectionStrategy();
@@ -71,6 +71,7 @@ public class WorldMap implements ILocationProvider {
     public Map<Vector2d, Grass> getGrass() { return grass; }
     public Optional<OwlBear> getOwlBear() { return Optional.ofNullable(owlBear); }
     public Earth getEarth() { return earth; }
+    public MapActions getMapActions() { return mapActions; }
 
     public void step(){
         mapActions.removeDeadAnimals();
@@ -105,30 +106,32 @@ public class WorldMap implements ILocationProvider {
         if(grass.get(position) != null) return grass.get(position).toString();
         if(owlBear != null && owlBear.getPosition().equals(position)) return owlBear.toString();
         Animal animal = animals.get(position).iterator().next();
+
         return animal.toString();
     }
 
     public Collection<IWorldElement> objectsAt(Vector2d position){
         ArrayList<IWorldElement> objects = new ArrayList<>();
 
-        if(owlBear != null && owlBear.getPosition().equals(position))objects.add(owlBear);
+        if(owlBear != null && owlBear.getPosition().equals(position)) objects.add(owlBear);
         if(grass.get(position) != null) objects.add(grass.get(position));
         if(animals.get(position) != null) objects.addAll(animals.get(position));
 
         if(objects.isEmpty()) return null;
+
         return objects;
     }
-
-    public Collection<IWorldElement> getElements() {
         //Might be useful later
-
-        List<IWorldElement> elements = new ArrayList<>(grass.values());
-        for (HashSet<Animal> animalHash : animals.values())
-            elements.addAll(animalHash);
-        if (owlBear != null) elements.add(owlBear);
-
-        return elements;
-    }
+//    public Collection<IWorldElement> getElements() {
+//
+//
+//        List<IWorldElement> elements = new ArrayList<>(grass.values());
+//        for (HashSet<Animal> animalHash : animals.values())
+//            elements.addAll(animalHash);
+//        if (owlBear != null) elements.add(owlBear);
+//
+//        return elements;
+//    }
 
     public boolean isOccupied(Vector2d position){
         return objectsAt(position) != null;
