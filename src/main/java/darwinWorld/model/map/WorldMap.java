@@ -16,7 +16,8 @@ import darwinWorld.utils.MapVisualizer;
 
 import java.util.*;
 
-public class WorldMap implements ILocationProvider {
+public class
+WorldMap implements ILocationProvider {
 
     private final Map<Vector2d, HashSet<Animal>> animals = new HashMap<>();
     private final Map<Vector2d, Grass> grass = new HashMap<>();
@@ -195,9 +196,9 @@ public class WorldMap implements ILocationProvider {
 
         //Top or Bottom, gets assigned opposite rotation
         if (oldPosition.getY() > mapBoundary.upperRight().getY())
-            return MoveRotation.DEG_90;
-        if (oldPosition.getX() < 0)
-            return MoveRotation.DEG_0;
+            return MoveRotation.add(rotation,MoveRotation.DEG_180);
+        if (oldPosition.getY() < 0)
+            return MoveRotation.add(rotation,MoveRotation.DEG_180);
 
         //Left or Right side, rotation remains the same
         return rotation;

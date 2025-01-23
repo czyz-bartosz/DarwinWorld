@@ -25,7 +25,7 @@ class WorldMapTest {
 //            "8, 10, 0, '0,0,10,3', '0,4,10,4', '0,5,10,8'"
 //    })
     @Test
-    void initializer_WithDefaultSimulation_placesRightAmountOfGrass(){
+    void initializer_WithDefaultSimulation_PlacesRightAmountOfGrass(){
         Simulation simulation = new Simulation();
 
         WorldMap map = simulation.getMap();
@@ -35,7 +35,7 @@ class WorldMapTest {
     }
 
     @Test
-    void initializer_WithDefaultSimulation_placesRightAmountOfAnimals(){
+    void initializer_WithDefaultSimulation_PlacesRightAmountOfAnimals(){
         Simulation simulation = new Simulation();
 
         WorldMap map = simulation.getMap();
@@ -47,7 +47,7 @@ class WorldMapTest {
     }
 
     @Test
-    void getPosition_WithCornerPosition_returnsValidPosition(){
+    void getPosition_WithCornerPosition_ReturnsValidPosition(){
         WorldMap map = new WorldMap(new Simulation());
 
         Boundary eb = map.getEarth().getBoundary();
@@ -63,8 +63,10 @@ class WorldMapTest {
         assertEquals(bottomRight, new Vector2d(eb.lowerLeft().getX(),eb.lowerLeft().getY()));
 
     }
+
+
     @Test
-    void getPosition_WithEdgePosition_returnsOppositePosition(){
+    void getPosition_WithEdgePosition_ReturnsOppositePosition(){
         WorldMap map = new WorldMap(new Simulation());
 
         Boundary eb = map.getEarth().getBoundary();
@@ -75,5 +77,43 @@ class WorldMapTest {
         assertEquals(right, new Vector2d(eb.lowerLeft().getX(),eb.upperRight().getY()));
         assertEquals(left, new Vector2d(eb.upperRight().getX(),eb.lowerLeft().getY()));
 
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0,180",
+            "315, 135",
+            "45, 225"
+    })
+    void getRotation_WithTopEdge_ReturnsOppositeRotation(int rotation,int correctRotation){
+        MoveRotation moveRotation = MoveRotation.getMoveRotation(rotation);
+        WorldMap map = new WorldMap(new Simulation());
+        Boundary eb = map.getEarth().getBoundary();
+
+        Vector2d top = new Vector2d((eb.upperRight().getX()-eb.lowerLeft().getX())/2, eb.upperRight().getY() + 1);
+
+        MoveRotation newRotation = map.getRotation(top,moveRotation);
+
+
+        assertEquals(MoveRotation.getMoveRotation(correctRotation), newRotation);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "180, 0",
+            "90, 270",
+            "135, 315"
+    })
+    void getRotation_WithBottomEdge_ReturnsOppositeRotation(int rotation, int correctRotation){
+        MoveRotation moveRotation = MoveRotation.getMoveRotation(rotation);
+        WorldMap map = new WorldMap(new Simulation());
+        Boundary eb = map.getEarth().getBoundary();
+
+        Vector2d bottom = new Vector2d((eb.upperRight().getX()-eb.lowerLeft().getX())/2, eb.lowerLeft().getY() - 1);
+
+        MoveRotation newRotation = map.getRotation(bottom, moveRotation);
+
+
+        assertEquals(MoveRotation.getMoveRotation(correctRotation), newRotation);
     }
 }
