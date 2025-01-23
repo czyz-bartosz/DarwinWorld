@@ -133,6 +133,8 @@ public class ParametersSelectorController {
     }
 
     public void setValues(SimulationParameters sp) {
+
+
         initializeSpinner(mapHeightSpinner, 2, 1000, sp.mapHeight());
         initializeSpinner(mapWidthSpinner, 1, 1000, sp.mapWidth());
         initializeSpinner(equatorSpanSpinner, 0, 1000, sp.equatorSpan());
