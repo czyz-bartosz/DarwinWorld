@@ -27,7 +27,7 @@ public class OwlBear extends AbstractAnimal {
         StackPane pane = new StackPane();
 
         Circle circle = new Circle();
-        circle.setFill(Color.web("#fc8803"));
+        circle.setFill(Color.web("#000000"));
         circle.radiusProperty().bind(Bindings.min(
                 pane.widthProperty(), pane.heightProperty()).divide(3));
         pane.getChildren().add(circle);

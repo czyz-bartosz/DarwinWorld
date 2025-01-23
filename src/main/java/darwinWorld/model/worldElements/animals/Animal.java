@@ -25,9 +25,14 @@ public class Animal extends AbstractAnimal {
 
     public Pane getGraphicalRepresentation() {
         StackPane pane = new StackPane();
+        double energyValue = Math.min(getEnergy() / 20., 1.);
+
+        double hue = energyValue * 120;
+        double saturation = 1.0;
+        double brightness = 1.0 - energyValue * 0.5;
 
         Circle circle = new Circle();
-        circle.setFill(Color.web("#ef0707"));
+        circle.setFill(Color.hsb(hue, saturation, brightness));
         pane.getChildren().add(circle);
         circle.radiusProperty().bind(Bindings.min(
                 pane.widthProperty(), pane.heightProperty()).divide(3));
@@ -71,10 +76,6 @@ public class Animal extends AbstractAnimal {
 
     public int getEnergy() {
         return energy;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
     }
 
     public void afterReproduce(int energyUsedToReproduce, Animal child) {
