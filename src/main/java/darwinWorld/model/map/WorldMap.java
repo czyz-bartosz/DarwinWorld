@@ -13,6 +13,7 @@ import darwinWorld.model.worldElements.animals.geneSelectionStrategies.IGeneSele
 import darwinWorld.model.worldElements.animals.geneSelectionStrategies.SequentialGeneSelectionStrategy;
 import darwinWorld.utils.GeneGenerator;
 import darwinWorld.utils.MapVisualizer;
+import darwinWorld.utils.RandomNumberGenerator;
 
 import java.util.*;
 
@@ -60,7 +61,7 @@ public class WorldMap implements ILocationProvider {
                     earth.randomPosition(),
                     MoveRotation.randomMoveRotation(),
                     geneGenerator.forLength(sp.genesLength()),
-                    0,
+                    RandomNumberGenerator.integerFromRange(0, sp.genesLength()-1),
                     sp.initialAnimalEnergy());
 
             mapActions.placeAnimal(animal);

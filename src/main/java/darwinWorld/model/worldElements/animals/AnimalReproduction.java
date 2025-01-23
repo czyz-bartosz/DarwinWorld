@@ -29,7 +29,7 @@ public class AnimalReproduction {
                 parent1.getPosition(),
                 MoveRotation.randomMoveRotation(),
                 childGene,
-                0,
+                RandomNumberGenerator.integerFromRange(0, parent1.getGenes().size()-1),
                 childEnergy
         );
 
