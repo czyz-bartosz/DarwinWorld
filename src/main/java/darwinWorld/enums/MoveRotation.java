@@ -45,7 +45,7 @@ public enum MoveRotation {
         };
     }
 
-    private static MoveRotation getMoveRotation(int angle) {
+    public static MoveRotation getMoveRotation(int angle) {
         return MoveRotation.valueOf("DEG_" + angle);
     }
 }
