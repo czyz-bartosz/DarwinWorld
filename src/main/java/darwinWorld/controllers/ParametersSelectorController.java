@@ -133,6 +133,8 @@ public class ParametersSelectorController {
     }
 
     public void setValues(SimulationParameters sp) {
+
+
         initializeSpinner(mapHeightSpinner, 2, 1000, sp.mapHeight());
         initializeSpinner(mapWidthSpinner, 1, 1000, sp.mapWidth());
         initializeSpinner(equatorSpanSpinner, 0, 1000, sp.equatorSpan());
@@ -146,6 +148,7 @@ public class ParametersSelectorController {
         initializeSpinner(initialGrassAmountSpinner, 0, 1000, sp.initialGrassAmount());
         initializeSpinner(initialAnimalAmountSpinner, 0, 1000, sp.initialAnimalAmount());
         initializeSpinner(initialAnimalEnergySpinner, 0, 1000, sp.initialAnimalEnergy());
+
     }
     private SimulationParameters buildParameters() throws InvalidArgumentException {
 
