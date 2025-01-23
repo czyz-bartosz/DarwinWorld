@@ -66,13 +66,16 @@ public class MapGridPaneUtils {
             Boundary visibleBounds,
             SimulationController simulationController
     ) {
+        Boundary mapBoundary = worldMap.getEarth().getBoundary();
+        int mapWidth = mapBoundary.upperRight().getX() - mapBoundary.lowerLeft().getX();
+        int mapHeight = mapBoundary.upperRight().getY() - mapBoundary.lowerLeft().getY();
         int shiftX = visibleBounds.lowerLeft().getX();
         int shiftY = visibleBounds.lowerLeft().getY();
         int height = visibleBounds.upperRight().getY() - visibleBounds.lowerLeft().getY();
 
         for (int y = visibleBounds.lowerLeft().getY(); y <= visibleBounds.upperRight().getY(); y++) {
             for (int x = visibleBounds.lowerLeft().getX(); x <= visibleBounds.upperRight().getX(); x++) {
-                Vector2d position = new Vector2d(x, y);
+                Vector2d position = new Vector2d(x + mapWidth / 2, y + mapHeight / 2);
 
                 Pane cellPane = new Pane();
                 if (worldMap.getEarth().getBoundary().contains(position)) {
