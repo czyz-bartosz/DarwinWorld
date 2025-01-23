@@ -146,6 +146,9 @@ public class ParametersSelectorController {
         initializeSpinner(initialGrassAmountSpinner, 0, 1000, sp.initialGrassAmount());
         initializeSpinner(initialAnimalAmountSpinner, 0, 1000, sp.initialAnimalAmount());
         initializeSpinner(initialAnimalEnergySpinner, 0, 1000, sp.initialAnimalEnergy());
+        saveToCSVCheckBox.setSelected(sp.saveToCSV());
+        withOwlBearCheckBox.setSelected(sp.withOwlBear());
+        crazyMutationsCheckBox.setSelected(sp.crazyMutation());
     }
     private SimulationParameters buildParameters() throws InvalidArgumentException {
 
