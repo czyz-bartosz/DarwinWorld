@@ -9,3 +9,9 @@ This project is a world simulation built with Java and JavaFX, where animals mov
 - Reproduction mechanics based on predefined conditions.
 - Energy-based survival system.
 - Configurable world parameters (e.g., grid size, number of initial animals, reproduction probability).
+
+## Screens
+
+![App menu](https://github.com/czyz-bartosz/DarwinWorld/blob/master/images/menu.PNG)
+
+![Simulation](https://github.com/czyz-bartosz/DarwinWorld/blob/master/images/simulation.PNG)
